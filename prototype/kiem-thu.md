@@ -34,13 +34,13 @@ Kết quả lần chạy: **25/25 đạt** (20 hành động chính sách + 5 m�
 
 ## 2. Prototype (bấm qua ca khó KB10)
 
-Logic chính sách nằm trong `prototype/policy.js`, và `prototype/index.html` gọi nó ở ba chỗ: học viên xác nhận gửi TA (`chuyen_TA`), AI soạn nháp (`soan_nhap_FAQ`), TA bấm duyệt (`duyet_dang_FAQ`).
+Chính sách nằm trong `prototype/policy.js`. `prototype/app.js` dùng nó cho màn hình TA (ô nháp, ô tick, duyệt, nhật ký) và đọc ví dụ phản chứng cùng mô tả hai tool tách của `dang_FAQ` từ `prototype/data.js`. `prototype/index.html` nạp ba file này theo thứ tự `data.js` → `policy.js` → `app.js`, rồi gọi `app.js` ở ba chỗ: học viên xác nhận gửi TA (`chuyen_TA`), AI soạn nháp (`soan_nhap_FAQ`), TA bấm duyệt (`duyet_dang_FAQ`).
 
-Kiểm tra bằng Chrome chạy tự động, 17 bước, đều đạt:
+Kiểm tra bằng Chrome chạy tự động, 19 bước, đều đạt. Mở trực tiếp `index.html` (bấm đúp) và `index.html#ta` (vào thẳng màn hình TA) đều chạy đúng:
 
 | Bước | Kết quả |
 |---|---|
-| Nạp được `policy.js` | Đúng |
+| Nạp được `policy.js`, `app.js`, `data.js` | Đúng |
 | Học viên không có nút đăng FAQ, thấy "FAQ chưa được đăng" | Đúng |
 | "Gửi TA kiểm tra" mở hộp xác nhận; xác nhận xong học viên thấy "Đã gửi TA kiểm tra" | Đúng |
 | Màn hình TA có ô nháp sửa được, ô tick "đã kiểm tra", nút duyệt; nháp ban đầu còn dấu `[NHÁP`; thấy phản chứng 0,25 | Đúng |
