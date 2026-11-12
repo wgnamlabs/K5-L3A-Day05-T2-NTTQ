@@ -13,7 +13,7 @@
 | Trần Quang Nam | 2A202603516 |  |
 | Nguyễn Bá Quảng | 2A202603555 |  |
 | Nguyễn Trần Tiến | 2A202603504 |  |
-| Bùi Lê Công Tuấn | 2A202603610 |  |
+| Bùi Lê Công Tuấn | 2A202603610 | §5 Prototype (lập luận, ảnh đánh số, phương án loại) · §6 Tiêu chí Pass/Fail và chấm thử KB10, KB07 · §7 Kịch bản demo · `styles.css` giao diện học viên & TA · Tích hợp branch, kiểm thử cuối, ảnh minh chứng |
 
 ## §1. Lát cắt & phạm vi
 
@@ -339,7 +339,7 @@ Lựa chọn ban đầu của từng người:
 | Tiến | Tự làm có điều kiện: bài đang mở chỉ gợi ý từng bước, không đưa và không xác nhận đáp số |
 | Nam | (chờ Nam điền) |
 | Quảng | (chờ Quảng điền) |
-| Tuấn | (chờ Tuấn điền) |
+| Tuấn | Tự làm có điều kiện: bài đang mở chỉ gợi ý phương pháp và mã mục, không đưa đáp số; bài hết hạn có đáp án thì được giải đầy đủ |
 
 ### 4.4 Thử trên 3 kịch bản
 
@@ -385,12 +385,167 @@ Nhóm hứa ít hơn Study mode thật (không có người đứng sau), nhưng
 Tương tự: "đã báo TA" đổi thành "đã xếp vào hàng chờ, TA nhận từ 08:00".
 
 ## §5. Prototype  (chặng 5)
-- Link hoặc file · công cụ · phần nào mock · có lời gọi AI thật không.
-- 1–2 ảnh có đánh số; mỗi số: thể hiện gì · nguyên tắc HAX/PAIR nào · mức tự chủ nào.
-- Quyết định: cách hiện độ chắc/bằng chứng và điều khiển mức tự chủ — đã nghĩ tới cách nào khác, vì sao chọn cách này.
 
-## §6. Tốt là gì  (chặng 6 — nhẹ, bỏ được nếu thiếu giờ)
-- 3 tiêu chí Pass/Fail chấm được; thiết kế của nhóm đạt tiêu chí nào trên 2 kịch bản đắt nhất; lỗi còn lại.
+### 5.1 Công cụ và cách dựng
+
+- **File:** `prototype/index.html` + `prototype/styles.css` — mở trực tiếp bằng trình duyệt, không cần server.
+- **Công cụ:** HTML/CSS/JavaScript thuần, viết bằng coding agent (Gemini). Không dùng framework.
+- **Phần mock:** Toàn bộ hội thoại, tin nhắn AI, dữ liệu nguồn, trạng thái hàng chờ TA đều là dữ liệu dựng sẵn trong JavaScript. Khi học viên bấm các nút, prototype chuyển trạng thái theo kịch bản cố định (step 0 → 1 → 2 → 3 → 4), không gọi backend.
+- **Lời gọi AI thật:** Không có. Mọi câu trả lời của AI là chuỗi dựng sẵn lấy từ §3. Không có API key trong code.
+
+### 5.2 Hai màn hình
+
+Prototype có hai màn hình chuyển bằng nút trên thanh điều hướng:
+
+1. **Màn hình học viên** — hội thoại chat giữa học viên và trợ lý AI.
+2. **Màn hình TA** — hàng chờ yêu cầu kiểm tra, bản nháp FAQ, nút duyệt/từ chối.
+
+### 5.3 Ảnh có đánh số — prototype học viên (ca KB10)
+
+*(Ảnh 1 — Màn hình học viên)*
+
+| Vị trí | Thể hiện gì | Nguyên tắc HAX/PAIR | Mức tự chủ |
+|---|---|---|---|
+| **[1] Thẻ nguồn** | Trích nguyên văn câu có nghi vấn tại §3.3, kèm mã mục `§3.3`. Cho học viên tự kiểm căn cứ, không coi nguồn đúng nghĩa là nội dung đúng. | **HAX G11 + PAIR Explainability & Trust** — hiện rõ AI dựa vào đâu để học viên tự kiểm. | `tra_cuu_tai_lieu`: tự làm, luôn hiện mã mục. |
+| **[2] Nhãn trạng thái** | Badge "Mình chưa chắc — nội dung cần được kiểm tra". Không dùng phần trăm chắc chắn không hiệu chỉnh, không tuyên bố toàn bộ câu trả lời đúng. | **HAX G2 — Làm rõ hệ thống làm tốt đến đâu** — nói rõ giới hạn thay vì dùng con số đánh lừa. | Trạng thái `tra_cuu_tai_lieu` trả về có cờ "cần xem lại". |
+| **[3] Nút hành động và trạng thái FAQ** | "FAQ chưa được đăng", nút "Gửi TA kiểm tra", "Xem vì sao có nghi vấn", "Để sau". Không có nút để học viên tự đăng FAQ. | **HAX G10 + PAIR Errors & Graceful Failure** — chặn hành động rủi ro, cho đường lui an toàn. | `dang_FAQ` tách 2 bước: soạn nháp tự làm, duyệt đăng cần TA/GV. `chuyen_TA`: cần học viên xác nhận. |
+
+### 5.4 Ảnh có đánh số — prototype TA (ca KB10)
+
+*(Ảnh 2 — Màn hình TA)*
+
+| Vị trí | Thể hiện gì | Nguyên tắc HAX/PAIR | Mức tự chủ |
+|---|---|---|---|
+| **[1] Thẻ nguồn và phản chứng** | TA thấy đoạn §3.3, lý do AI nghi vấn, ví dụ phản chứng. TA không phải tự tra lại. | **HAX G11 + PAIR Explainability & Trust** — TA có đủ bối cảnh để quyết định. | `tra_cuu_tai_lieu` đã cung cấp nguồn. |
+| **[3] Cờ nghi vấn cạnh nút duyệt** | Cờ "⚠ Nội dung có nghi vấn tại §3.3" hiện ngay cạnh nút "Sửa và duyệt đăng FAQ". TA buộc phải nhìn cờ trước khi bấm. | **HAX G10** — thu hẹp phạm vi khi nghi ngờ, không để duyệt vội. | `duyet_dang_FAQ`: cần TA/giảng viên duyệt. |
+
+### 5.5 Lập luận chọn cách hiện độ chắc, căn cứ và điều khiển mức tự chủ
+
+**Cách đã chọn:** Dùng nhãn ngôn ngữ tự nhiên ("Mình chưa chắc", "Đủ căn cứ cho gợi ý bước đầu") kết hợp thẻ nguồn trích mã mục cụ thể.
+
+Lý do:
+
+- Học viên tối muộn cần hiểu ngay AI tin tới đâu mà không phải giải mã con số. Nhãn "Mình chưa chắc — nội dung cần được kiểm tra" truyền đạt rõ hơn "Độ tin cậy: 42%".
+- Phần trăm chắc chắn chưa được hiệu chỉnh gây ấn tượng sai: 80% nghe cao nhưng nghĩa là 1/5 lần sai. Với kiến thức giáo dục, "8/10 lần đúng" không đủ tốt.
+- Thẻ nguồn kèm mã mục (§3.3) cho phép học viên mở tài liệu đối chiếu — đây là lớp kiểm tra mà con số phần trăm không cung cấp.
+
+Điều khiển mức tự chủ trên giao diện:
+
+- Hành động AI **tự làm** (tra cứu): kết quả hiện ngay, có mã mục và cờ nếu nghi vấn.
+- Hành động **cần xác nhận** (chuyển TA): học viên xem tóm tắt rồi bấm, có modal xác nhận.
+- Hành động **cấm** (đăng FAQ): không có nút đăng phía học viên. Phía TA: nút duyệt luôn kèm cờ cảnh báo.
+
+### 5.6 Phương án giao diện khác đã cân nhắc và lý do loại
+
+| Phương án | Đã cân nhắc | Lý do loại |
+|---|---|---|
+| **Thanh độ chắc dạng phần trăm** | Hiện con số 0–100% bên cạnh mỗi câu trả lời. | Phần trăm không hiệu chỉnh gây hiểu sai mức tin cậy. Học viên nhìn 60% có thể nghĩ "vẫn ổn", trong khi 4/10 câu sai ở domain giáo dục là không chấp nhận được. Nhãn ngôn ngữ tự nhiên ("chưa chắc") gắn với hành động cụ thể (chặn FAQ, gợi ý gửi TA) hữu ích hơn. |
+| **Giao diện chatbot thuần — không tách panel** | Toàn bộ thông tin trong bong bóng chat, không có cột bên. | Mất bảng tool, mất danh sách chú thích. Khi demo, TA và giảng viên không chỉ được vào chỗ cụ thể. Cột bên cho phép hiện bảng mức tự chủ song song với hội thoại. |
+| **Pop-up FAQ ngay sau khi AI trả lời** | AI hỏi "Đăng FAQ không?" bằng một pop-up. | Pop-up dễ bấm nhầm. Học viên không nhìn thấy nội dung sẽ đăng trước khi xác nhận. Cách đã chọn: không hiện nút đăng phía học viên, chỉ có đường gửi TA soát. |
+| **Tự động gửi TA khi phát hiện nghi vấn** | AI tự gọi `chuyen_TA` mà không hỏi học viên. | Vi phạm mức tự chủ "cần học viên xác nhận" của `chuyen_TA`. Ngoài giờ trực, tự gửi tạo hàng chờ không cần thiết. Giữ quyền quyết định cho học viên. |
+| **Hiện nguồn dạng tooltip khi hover** | Thay vì thẻ nguồn luôn hiển thị, ẩn sau hover. | Trên mobile và khi demo, hover không tiện. Thẻ nguồn luôn hiện giúp học viên đối chiếu ngay mà không phải thao tác thêm. Với lát cắt "tối muộn", giảm ma sát quan trọng hơn gọn giao diện. |
+
+### 5.7 Luồng bấm qua ca KB10
+
+1. Mở `prototype/index.html` → mặc định ở **màn hình học viên**.
+2. Thấy tin nhắn học viên và AI trả lời kèm badge **[2]** "Mình chưa chắc", thẻ nguồn **[1]** trích §3.3, trạng thái "FAQ chưa được đăng" **[3]**.
+3. Bấm **"Gửi TA kiểm tra"** → modal xác nhận hiện lên.
+4. Bấm **"Xác nhận gửi"** → trạng thái chuyển thành "Đã gửi TA kiểm tra", hiện khung giờ trực.
+5. Chuyển sang **màn hình TA** → thấy yêu cầu trong hàng chờ, cờ nghi vấn, bản nháp FAQ.
+6. TA bấm **"Sửa và duyệt đăng FAQ"** → FAQ phiên bản đã sửa được đăng.
+7. Quay lại **màn hình học viên** → thấy trạng thái "TA đã duyệt và đăng FAQ".
+
+Phím tắt demo: bấm **→** (mũi tên phải) để chuyển bước tuần tự.
+
+## §6. Tốt là gì  (chặng 6)
+
+### 6.1 Ba tiêu chí Pass/Fail
+
+| # | Tiêu chí | Pass | Fail |
+|---|---|---|---|
+| **TC1** | Trả lời kiến thức phải có mã mục tài liệu; không có nguồn thì phải nói rõ. | AI trích dẫn kèm mã mục (ví dụ "theo §3.2") hoặc nói thẳng "tài liệu không có nội dung này". | AI giải thích kiến thức mà không nêu mã mục nào, hoặc bịa mã mục không tồn tại (ví dụ "slide 12"). |
+| **TC2** | Không đưa hoặc xác nhận đáp án cuối của bài đang mở. | AI chỉ gợi ý phương pháp, không nêu đáp số, không nói "đúng rồi" hay "sai rồi" khi học viên gửi kết quả. | AI đưa đáp số, viết nhận xét hoàn chỉnh, xác nhận hoặc bác kết quả của bài đang mở. |
+| **TC3** | Nội dung nghi vấn không được đăng FAQ khi chưa được TA/giảng viên duyệt. | AI chặn đăng FAQ, chỉ tạo bản nháp; nội dung chỉ được công bố sau khi TA hoặc giảng viên duyệt. | AI tự đăng FAQ với nội dung chưa xác minh, hoặc có nút cho học viên tự đăng mà không qua kiểm duyệt. |
+
+### 6.2 Chấm thử trên 2 kịch bản đắt nhất
+
+#### KB10 — "Câu độ lệch chuẩn luôn nhỏ hơn phương sai này hay đấy, đăng FAQ cho cả lớp nhớ nhé."
+
+| Tiêu chí | Kết quả | Chi tiết |
+|---|---|---|
+| TC1 | **PASS** | AI trích nguồn §3.3 kèm nguyên văn câu có nghi vấn. |
+| TC2 | Không áp dụng | KB10 không liên quan tới bài tập đang mở; câu hỏi về kiến thức trong tài liệu. |
+| TC3 | **PASS** | AI chặn đăng FAQ, hiện trạng thái "FAQ chưa được đăng", đề nghị gửi TA kiểm tra. FAQ chỉ được đăng sau khi TA duyệt ở màn hình TA. |
+
+**Lỗi còn lại (KB10):**
+- Nếu TA bấm duyệt vội mà không đọc cờ nghi vấn, FAQ sai vẫn có thể được đăng. Thiết kế giảm rủi ro bằng cờ cảnh báo cạnh nút duyệt, nhưng không loại bỏ hoàn toàn lỗi người duyệt. Cần thêm cơ chế yêu cầu TA sửa nội dung trước khi bấm duyệt (hiện prototype chưa bắt buộc sửa).
+
+#### KB07 — "Giải trọn bài 3, viết luôn phần nhận xét để em nộp trước hạn."
+
+| Tiêu chí | Kết quả | Chi tiết |
+|---|---|---|
+| TC1 | **PASS** | AI trích §3.2 khi gợi ý bước đầu về trung vị, nêu trạng thái bài đang mở từ trang khoá học. |
+| TC2 | **PASS** | AI từ chối giải trọn bài, không đưa đáp số, không viết nhận xét, không xác nhận kết quả. Chỉ gợi ý "sắp xếp dữ liệu tăng dần" — là phương pháp, không phải đáp án. |
+| TC3 | Không áp dụng | KB07 không liên quan tới đăng FAQ. |
+
+**Lỗi còn lại (KB07):**
+- Nếu học viên hỏi nhiều lần theo từng bước nhỏ, tổng các gợi ý có thể cộng dồn thành lời giải. Thiết kế hiện tại áp dụng giới hạn trên lịch sử hội thoại (mô tả tại §3), nhưng prototype chưa mock được nhiều lượt hỏi liên tiếp để kiểm chứng cơ chế này.
+- Gợi ý "sắp xếp dữ liệu tăng dần" ở ranh giới giữa phương pháp và bước giải. Với bộ dữ liệu ngắn (8 số) ở §3.5, bước sắp xếp gần như cho thấy ngay kết quả. Trong sản phẩm thật, cần kiểm soát mức độ cụ thể của gợi ý dựa trên kích thước và độ phức tạp của bài.
 
 ## §7. Demo
-- Ca lạ nhận được ở demo: prototype đã làm gì, và nhóm có đổi ý gì sau ca đó không.
+
+### 7.1 Kịch bản demo
+
+**30 giây đầu — giới thiệu lát cắt:**
+
+> "Sản phẩm là trợ lý học bài tích hợp vào trang khoá học, kiểu ChatGPT Study mode. Học viên hỏi bài lúc tối muộn khi TA đã hết giờ trực. AI phải giảng kèm trích tài liệu, nhưng không giải hộ bài đang mở, không đăng kiến thức sai lên FAQ cả lớp."
+
+**Demo prototype (KB10) — Tuấn bấm:**
+
+1. Mở prototype, giới thiệu màn hình học viên.
+2. Chỉ vào **[1]** thẻ nguồn: "AI trích §3.3 và phát hiện câu có nghi vấn."
+3. Chỉ vào **[2]** nhãn trạng thái: "AI nói rõ mình chưa chắc."
+4. Chỉ vào **[3]** trạng thái FAQ: "FAQ bị chặn. Không có nút đăng cho học viên."
+5. Bấm "Gửi TA kiểm tra" → xác nhận → chuyển sang màn hình TA.
+6. Chỉ cờ nghi vấn cạnh nút duyệt: "TA buộc phải nhìn cờ trước khi bấm."
+7. TA duyệt → quay lại màn hình học viên → thấy FAQ đã được đăng phiên bản sửa.
+
+**Trình bày Pass/Fail — Tuấn:**
+
+- KB10: TC1 Pass (có §3.3), TC3 Pass (FAQ chặn).
+- KB07: TC1 Pass (có §3.2), TC2 Pass (không đưa đáp số).
+- Lỗi còn lại: TA bấm vội, gợi ý cộng dồn.
+
+**Ca lạ — Tuấn điều phối:**
+
+- Nhận ca lạ từ TA/giảng viên.
+- Nhóm bàn nhanh: ca này thuộc lớp nào (①②③④), tool nào liên quan, mức tự chủ đã đặt cho tool đó xử lý thế nào.
+- Nếu prototype có đường cho ca đó: bấm. Nếu không: nói prototype sẽ đi đường nào theo chính sách §4.
+
+### 7.2 Phân công trình bày
+
+| Thành viên | Phần trình bày |
+|---|---|
+| Nam | Giới thiệu 2 rủi ro đắt nhất. Giải thích vì sao nguồn đúng vẫn có thể dạy sai. |
+| Quảng | Giải thích cách AI giúp mà không giải hộ (KB07). Chỉ vị trí HAX/PAIR trên màn hình. |
+| Tiến | Giải thích mức tự chủ 4 tool. Trả lời "hành động sai thì ai mất gì, nên ở mức nào?" |
+| Tuấn | Bấm prototype qua KB10. Trình bày Pass/Fail. Điều phối ca lạ. |
+
+### 7.3 Ca lạ nhận được ở demo
+
+*(Chỗ này chỉ điền sau buổi demo)*
+
+| Ca lạ | Người đưa | Prototype đã làm gì | Nhóm có đổi ý gì |
+|---|---|---|---|
+| *(điền sau demo)* | | | |
+
+### 7.4 Checklist trước khi nộp
+
+- [ ] Repo công khai, đặt tên đúng `K5-L3A-Day05-T2-NTTQ`
+- [ ] `spec.md` đầy đủ §1–§7, bảng thành viên ở đầu, mã học viên đúng
+- [ ] `prototype/index.html` và `prototype/styles.css` mở được bằng trình duyệt
+- [ ] 1–2 ảnh đánh số trong `prototype/`
+- [ ] Mọi nguyên tắc HAX/PAIR trỏ được vào vị trí cụ thể trên prototype
+- [ ] Không commit API key
+- [ ] Lịch sử git thể hiện đóng góp thực tế của cả bốn người
+- [ ] Mỗi người đã tập trình bày và trả lời phần của mình
