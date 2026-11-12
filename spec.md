@@ -151,6 +151,128 @@ Giao diện hiển thị:
 ### Lỗi mà sửa câu chữ không cứu được
 
 Nếu đáp án đã hiện, thêm câu “chỉ tham khảo” hoặc xoá tin không làm học viên chưa từng thấy đáp án. Cần chặn trước khi gửi: kiểm tra mã bài và trạng thái từ dữ liệu B; với bài đang mở chỉ cho phép gợi ý đầu tiên, chặn đầu ra có đáp số, nhận xét hoàn chỉnh hoặc xác nhận đúng/sai. Giới hạn áp dụng cả lịch sử hội thoại để nhiều gợi ý nhỏ không cộng thành lời giải. Không có trạng thái đáng tin cậy thì hỏi lại hoặc chuyển TA, không tự mở đáp án. Prototype dùng phản hồi dựng sẵn để minh hoạ giới hạn; sản phẩm thật cần kiểm soát phía hệ thống trước khi phát nội dung, không chỉ ẩn nút ở giao diện.
+
+### KB10 — Tài liệu có dấu hiệu sai và học viên yêu cầu đăng FAQ
+
+#### AI nói gì?
+
+> **Mình chưa chắc nội dung này đúng.**
+>
+> Mình tìm thấy đúng câu “Vì là căn bậc hai, độ lệch chuẩn luôn nhỏ hơn phương sai” tại **Tài liệu buổi 3, §3.3**. Tuy nhiên, quy tắc “luôn nhỏ hơn” có dấu hiệu không đúng trong mọi trường hợp. Ví dụ, nếu phương sai là 0,25 thì độ lệch chuẩn là √0,25 = 0,5, lớn hơn 0,25.
+>
+> Vì vậy, mình **chưa đăng nội dung này lên FAQ**. Bạn có muốn gửi câu hỏi và đoạn §3.3 này cho TA kiểm tra không?
+
+#### Người dùng nhìn thấy gì?
+
+Ngoài câu trả lời, học viên nhìn thấy:
+
+- Nhãn màu cảnh báo: **“Mình chưa chắc — nội dung cần được kiểm tra.”**
+- Thẻ nguồn: **“Tài liệu buổi 3 · §3.3 Phương sai và độ lệch chuẩn.”**
+- Nguyên văn câu trong tài liệu đang có nghi vấn.
+- Trạng thái: **“FAQ chưa được đăng.”**
+- Nút chính: **“Gửi TA kiểm tra.”**
+- Nút phụ: **“Xem vì sao có nghi vấn.”**
+- Nút thoát: **“Để sau.”**
+- Không có nút cho học viên tự đăng nội dung lên FAQ.
+
+#### Người dùng làm gì tiếp?
+
+Nếu học viên chọn **“Gửi TA kiểm tra”**, hệ thống hiển thị một bước xác nhận:
+
+> Gửi cho TA câu hỏi của bạn, đoạn §3.3 và lý do nội dung có nghi vấn? Nội dung này chưa được đăng lên FAQ.
+
+Sau khi học viên xác nhận và `chuyen_TA` báo thành công:
+
+- Câu hỏi được đưa vào hàng chờ của TA.
+- Học viên thấy trạng thái **“Đã gửi TA kiểm tra.”**
+- Nếu đang ngoài giờ 08:00–22:00, hệ thống nói rõ TA sẽ nhìn thấy yêu cầu từ ca trực tiếp theo lúc 08:00.
+- Hệ thống không hứa thời điểm có câu trả lời vì dữ liệu track không cung cấp SLA.
+- Trong lúc chờ, nội dung không được đăng FAQ.
+
+Nếu học viên không thực hiện hành động nào:
+
+- Không có nội dung nào được đăng.
+- Câu hỏi vẫn giữ trạng thái “cần kiểm tra”.
+- Học viên có thể quay lại chuyển TA sau.
+
+#### Ai được báo và thấy gì?
+
+TA chỉ được báo sau khi:
+
+1. Học viên bấm “Gửi TA kiểm tra”.
+2. Học viên xác nhận nội dung sẽ gửi.
+3. Tool `chuyen_TA` trả về trạng thái thành công.
+
+TA nhìn thấy:
+
+- Câu hỏi nguyên văn của học viên.
+- Đoạn tài liệu §3.3 đang có nghi vấn.
+- Lý do AI không chắc.
+- Ví dụ phản chứng mà AI đã phát hiện.
+- Trạng thái **“FAQ chưa được đăng”**.
+- Các lựa chọn: trả lời riêng cho học viên, sửa bản nháp hoặc duyệt một phiên bản đã chỉnh sửa để đăng FAQ.
+
+Nếu ngoài giờ, yêu cầu được xếp hàng ngay và TA nhìn thấy từ ca trực tiếp theo lúc 08:00. Hệ thống không thông báo cho cả lớp trước khi có người duyệt.
+
+#### Quyết định cách xử lý
+
+Nhóm đã cân nhắc ba phương án:
+
+1. Trả lời chắc chắn theo đúng nội dung tài liệu và đăng FAQ.
+2. Dừng hoàn toàn, không giải thích gì và tự động chuyển TA.
+3. Trả lời kèm giới hạn, hiển thị bằng chứng, chặn đăng FAQ và hỏi học viên có muốn chuyển TA không.
+
+Nhóm chọn **phương án 3**.
+
+Lý do:
+
+- Câu hỏi của học viên đã rõ nên không cần hỏi lại học viên đang muốn biết điều gì.
+- AI vẫn có thể giúp bằng cách chỉ ra đúng đoạn §3.3 và lý do câu này cần kiểm tra.
+- Nội dung chưa được xác minh không được lan tới cả lớp.
+- Học viên giữ quyền quyết định có gửi cuộc hội thoại cho TA hay không.
+- TA nhận được đủ bối cảnh nên học viên không phải kể lại từ đầu.
+
+Nhóm loại phương án 1 vì `tra_cuu_tai_lieu` tìm đúng nguồn không có nghĩa nguồn luôn đúng. Nếu tiếp tục gọi `dang_FAQ`, một lỗi trong tài liệu sẽ lan tới cả lớp.
+
+Nhóm loại phương án 2 vì từ chối hoàn toàn không giúp học viên hiểu vấn đề và tự động chuyển TA khi chưa có xác nhận có thể tạo hàng chờ không cần thiết, đặc biệt ngoài giờ trực.
+
+#### Loại lỗi
+
+Lỗi chính là **lỗi ngữ cảnh**: `tra_cuu_tai_lieu` hoạt động đúng và trả đúng §3.3, nhưng chính nội dung nguồn có dấu hiệu sai. Vì vậy AI không nên đổ lỗi cho học viên hoặc nói “mình không tìm thấy tài liệu”; AI phải nói rõ đã tìm thấy nguồn nhưng nguồn cần được kiểm tra.
+
+Nếu hệ thống vẫn cho AI tự gọi `dang_FAQ` với nội dung này thì đó còn là **lỗi thiết kế hệ thống**: một hành động có phạm vi ảnh hưởng tới cả lớp không có bước người có thẩm quyền duyệt.
+
+Cách sửa phải gồm cả hai phần:
+
+- Câu chữ nói rõ giới hạn và căn cứ.
+- Thiết kế chặn `dang_FAQ` cho tới khi TA hoặc giảng viên duyệt.
+
+#### Nguyên tắc HAX/PAIR
+
+- **HAX G2 — Làm rõ hệ thống làm tốt đến đâu:** nhãn “Mình chưa chắc — nội dung cần được kiểm tra” cho học viên biết AI không xác nhận câu trong §3.3 là đúng.
+- **HAX G11 + PAIR Explainability and Trust:** thẻ nguồn hiển thị đúng “Tài liệu buổi 3 · §3.3” và ví dụ phương sai 0,25 giúp học viên tự kiểm tra vì sao AI nghi ngờ.
+- **HAX G10 + PAIR Errors and Graceful Failure:** khi nguồn có nghi vấn, hệ thống thu hẹp hành động bằng cách chặn đăng FAQ và đưa ra đường lui “Gửi TA kiểm tra”.
+
+Trên ảnh prototype, ba vị trí này cần được đánh số để người chấm chỉ trực tiếp được:
+
+1. Nhãn “Mình chưa chắc”.
+2. Thẻ nguồn §3.3 và lý do có nghi vấn.
+3. Trạng thái “FAQ chưa được đăng” cùng nút “Gửi TA kiểm tra”.
+
+#### Lỗi sửa câu chữ không cứu được
+
+Chỉ thêm câu “AI có thể sai” là chưa đủ. Nếu giao diện vẫn có nút “Đăng FAQ” và AI vẫn được gọi trực tiếp `dang_FAQ`, học viên hoặc AI vẫn có thể phát tán kiến thức sai.
+
+Thiết kế phải cứu lỗi bằng cách:
+
+- Không hiển thị nút đăng FAQ cho học viên.
+- Tách việc soạn nội dung khỏi việc xuất bản.
+- AI chỉ được tạo bản nháp.
+- TA hoặc giảng viên phải duyệt phiên bản cuối trước khi đăng.
+- Nếu không ai duyệt, bản nháp không bao giờ tự động được công bố.
+
+
+>>>>>>> e1e22c34134593101e4e864f6e61a1b097e28513
 ## §4. Mức tự chủ  (chặng 4)
 Với mỗi tool:
 - Mức của nhóm (tự làm / cần người duyệt / cấm). Nếu cần người duyệt: ai duyệt · người duyệt thấy gì · quá hạn thì sao.
