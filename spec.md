@@ -4,7 +4,6 @@
 >
 > **Một quyết định = bốn ý:** đã cân nhắc phương án nào · chọn phương án nào · vì sao · loại các phương án kia vì sao. Bằng chứng = lập luận trỏ về một chỗ cụ thể: tool nào, dòng dữ liệu nào của track, điều gì trong mục "Sản phẩm thật hôm nay", chỗ nào trên prototype (ảnh đánh số). Không chạy agent.
 
-```markdown
 # Bài nộp LAB5 — [Track] · Nhóm [tên]
 
 **Lớp:** ____ · **Bàn / zone:** ____ · **Track:** ____
@@ -246,15 +245,144 @@ Thiết kế phải cứu lỗi bằng cách:
 
 
 ## §4. Mức tự chủ  (chặng 4)
-Với mỗi tool:
-- Mức của nhóm (tự làm / cần người duyệt / cấm). Nếu cần người duyệt: ai duyệt · người duyệt thấy gì · quá hạn thì sao.
-- Lý do theo cost-of-error: sai thì ai chịu gì · đảo lại được không · chờ người thì mất gì.
-- Phương án đã cân nhắc và vì sao loại.
-Thêm:
-- Tool khó xếp nhất: mỗi người từng chọn gì, cái giá của mỗi phía (trỏ về kịch bản ở §2), nhóm chốt thế nào.
-- Thử mức đã đặt trên 2 kịch bản đắt nhất + 1 kịch bản bình thường: cái sai có bị chặn không? còn việc nào làm khi lẽ ra phải hỏi? người dùng bình thường có phải chờ vô ích không?
-- Luật thêm hoặc tool tách bước (nếu có), và vì sao.
-- Một mức tự chủ đã đổi lời hứa nào với người dùng.
+
+Nguyên tắc: mức tự chủ đặt theo CÁI GIÁ KHI SAI.
+Sai rẻ, học viên tự sửa được thì để AI tự làm.
+Sai đắt, hoặc đã đọc là không thu hồi được thì phải có người duyệt hoặc cấm.
+
+### 4.1 Mức của nhóm cho 4 tool
+
+| Tool | Mức |
+|---|---|
+| tra_cuu_tai_lieu | TỰ LÀM |
+| goi_y_bai_tap | TỰ LÀM theo luật. Đáp số bài đang mở: CẤM |
+| chuyen_TA | CẦN HỌC VIÊN XÁC NHẬN |
+| dang_FAQ | TÁCH 2: soan_nhap_FAQ tự làm, duyet_dang_FAQ cần TA/giảng viên |
+
+### 4.2 Lý do cho từng tool
+
+#### 1) tra_cuu_tai_lieu: TỰ LÀM
+
+Luật kèm theo: luôn hiện mã mục (§3.x). Đoạn nghi vấn (câu cuối §3.3) gắn cờ "cần xem lại".
+
+- Sai thì ai chịu gì: học viên nhận đoạn không đúng ý. Tool chỉ đọc nên không đổi gì.
+- Đảo lại được không: được, học viên mở tài liệu đối chiếu.
+- Chờ người thì mất gì: lúc 22h không có ai để chờ. Đó chính là lát cắt của track.
+- Đã loại: cần duyệt mỗi lần tra (KB03 là ca bình thường mà phải chờ vô ích). Cấm (mất luôn việc trích tài liệu).
+- Lưu ý: tra đúng nguồn chưa chắc nguồn đúng (KB01, KB10). Nên luôn có mã mục và cờ để học viên tự kiểm.
+
+#### 2) goi_y_bai_tap: TỰ LÀM theo luật, đáp số bài đang mở là CẤM
+
+Luật trạng thái bài:
+- Bài đang mở: chỉ nêu phương pháp và mã mục. Không nêu số hay kết quả.
+- Bài hết hạn và đã có đáp án: được giải thích đầy đủ.
+- AI đọc trạng thái từ trang khoá học, không suy từ lời học viên (KB04).
+
+Lý do:
+- Sai thì ai chịu gì: học viên chép mà không hiểu. Khoá học mất công bằng. Giảng viên không biết ai thật sự hiểu.
+- Đảo lại được không: không. Đã đọc đáp án thì không thể "chưa biết" (KB07, KB08).
+- Chờ người thì mất gì: TA trực đến 22:00, bài 3 hạn 23:59. Hỏi sau 22:00 ngày 13/11 mà chờ TA thì đến 08:00 ngày 14/11, sau hạn. Chờ cũng là một kiểu sai.
+
+Đã loại:
+- Tự làm không giới hạn: dính KB07, KB08, không đảo lại được.
+- TA duyệt từng gợi ý: học viên hỏi sau 22:00 ngày hạn phải chờ đến sau hạn.
+- Cấm hoàn toàn: mất gợi ý từng bước (mục tiêu lát cắt), chặn luôn cả bài đã hết hạn.
+
+#### 3) chuyen_TA: CẦN HỌC VIÊN XÁC NHẬN
+
+Học viên xem bản tóm tắt sẽ gửi rồi mới bấm gửi.
+Ngoài giờ trực (08:00–22:00) thì vào hàng chờ.
+AI chỉ nói "đã gửi" sau khi tool báo thành công.
+
+- Sai thì ai chịu gì: học viên (tin thiếu thì TA hỏi lại, mất thời gian) và TA (bị ngập tin nếu AI tự gửi).
+- Đảo lại được không: được, theo bảng tool.
+- Chờ người thì mất gì: ngoài giờ tin nằm trong hàng chờ, TA nhận từ 08:00. Đây là giờ bắt đầu ca, không phải cam kết trả lời (KB09).
+- Không bấm thì sao: không gửi gì, học viên vẫn dùng tiếp trợ lý.
+
+Đã loại:
+- Tự làm: AI dễ nói "đã báo TA" khi tool chưa thành công và TA đang ngoài giờ (KB09).
+- TA duyệt trước: TA chính là người nhận.
+- Cấm: đây là đường chuyển người duy nhất.
+
+#### 4) dang_FAQ: TÁCH THÀNH 2 BƯỚC
+
+- soan_nhap_FAQ: TỰ LÀM. Chỉ tạo bản nháp, chỉ học viên đang chat thấy, xoá được. TA chỉ thấy nháp khi học viên xác nhận gửi qua chuyen_TA. Nháp không chứa khẳng định chưa kiểm.
+- duyet_dang_FAQ: CẦN TA/GIẢNG VIÊN DUYỆT. AI không có quyền này.
+
+Lý do:
+- Sai thì ai chịu gì: cả lớp. Một câu sai ở §3.3 đến tay mọi học viên (KB10).
+- Đảo lại được không: gỡ được, nhưng nhiều người đã đọc.
+- Chờ người thì mất gì: FAQ chậm vài giờ. Học viên vẫn nhận câu trả lời riêng ngay. Chi phí thấp.
+- Người duyệt thấy gì: câu hỏi, nháp trả lời, mã mục, cờ nghi vấn cạnh nút duyệt.
+- Không ai duyệt thì sao: nháp nằm trong hàng chờ, không tự đăng.
+
+Đã loại:
+- AI tự đăng rồi sửa sau: học viên đã đọc trước khi sửa.
+- Cấm hoàn toàn: mất FAQ hữu ích cho câu hỏi thường như KB03.
+- AI tự duyệt: người duyệt phải là người chịu trách nhiệm nội dung.
+
+### 4.3 Tool khó xếp nhất: goi_y_bai_tap
+
+Mức nào cũng có giá:
+- Nới tay (tự làm, không giới hạn): dính KB07, KB08, không đảo lại được.
+- Siết chặt (cấm hoặc duyệt): học viên bình thường bị chặn lúc 22h. Học viên hỏi bài đã hết hạn và có đáp án (KB04) cũng bị từ chối.
+
+Nhóm chốt: chia theo trạng thái bài chứ không chia theo tool.
+- Bài đang mở: chỉ gợi ý phương pháp, đáp số và nhận xét bị cấm.
+- Bài hết hạn có đáp án: giải thích đầy đủ.
+- Trạng thái lấy từ trang khoá học nên ai cũng kiểm tra lại được.
+
+Lựa chọn ban đầu của từng người:
+
+| Người | Mức cho goi_y_bai_tap ban đầu |
+|---|---|
+| Tiến | Tự làm có điều kiện: bài đang mở chỉ gợi ý từng bước, không đưa và không xác nhận đáp số |
+| Nam | (chờ Nam điền) |
+| Quảng | (chờ Quảng điền) |
+| Tuấn | (chờ Tuấn điền) |
+
+### 4.4 Thử trên 3 kịch bản
+
+Ba câu hỏi: (1) Cái sai có bị chặn không? (2) Còn làm khi lẽ ra phải hỏi không? (3) Học viên bình thường có chờ vô ích không?
+
+#### KB10 (đắt nhất): "Câu độ lệch chuẩn luôn nhỏ hơn phương sai này hay đấy, đăng FAQ cho cả lớp nhé."
+
+AI làm gì: tra §3.3, gắn cờ "Mình chưa chắc". Nói riêng với học viên rằng câu đó cần xem lại (phương sai 0,25 thì độ lệch chuẩn 0,5, lớn hơn). Hỏi có muốn "Gửi TA kiểm tra". Nháp FAQ chỉ có cờ, không có khẳng định sai, và chỉ tới TA khi học viên xác nhận gửi.
+
+1. Có bị chặn: CÓ. AI không có tool đăng, nút đăng khoá đến khi TA/giảng viên duyệt.
+2. Còn làm khi lẽ ra phải hỏi: còn một chỗ hở. Người duyệt có thể bấm vội. Giảm bằng cách hiện cờ cạnh nút duyệt.
+3. Chờ vô ích: KHÔNG. Học viên nhận câu trả lời riêng ngay, chỉ FAQ chậm.
+
+#### KB07 (đắt nhì): "Giải trọn bài 3, viết luôn phần nhận xét để em nộp trước hạn."
+
+AI làm gì: đọc trạng thái bài 3 (đang mở), chỉ gợi ý bước đầu theo §3.2. Không đưa số, không viết nhận xét.
+
+1. Có bị chặn: CÓ. Đáp số và nhận xét bài đang mở là cấm.
+2. Còn làm khi lẽ ra phải hỏi: "gợi ý bước đầu" có thể quá tay nếu nêu số trung gian. Luật: chỉ nêu phương pháp và mã mục.
+3. Chờ vô ích: KHÔNG. Gợi ý đến ngay lúc 23h, không cần TA.
+
+#### KB03 (bình thường): "Cái độ lệch ấy là gì ạ, em đọc không hiểu."
+
+AI làm gì: hỏi lại một câu ("§3.3 độ lệch chuẩn hay §3.4 giá trị ngoại lai?"), rồi tra và trích mục. Nếu là §3.3 thì cờ "cần xem lại" vẫn hiện.
+
+1. Có bị chặn: ca này không có hành động rủi ro cần chặn.
+2. Còn làm khi lẽ ra phải hỏi: KHÔNG. AI đã hỏi lại trước khi giảng.
+3. Chờ vô ích: KHÔNG. tra_cuu_tai_lieu tự làm, không cần ai duyệt.
+
+### 4.5 Luật thêm và tool tách bước
+
+- Tách dang_FAQ thành soan_nhap_FAQ và duyet_dang_FAQ. Nhờ vậy KB10 bị chặn mà FAQ vẫn dùng được cho câu hỏi thường.
+- Luật trạng thái bài: đọc từ trang khoá học, không suy từ lời học viên (KB04).
+- Luật xác nhận gửi: chỉ nói "đã gửi" sau khi chuyen_TA báo thành công (KB09).
+
+### 4.6 Lời hứa với người dùng đã đổi
+
+Trước: "AI trả lời và đăng FAQ giúp cả lớp".
+Sau: "AI soạn nháp, TA hoặc giảng viên duyệt rồi cả lớp mới thấy".
+
+Nhóm hứa ít hơn Study mode thật (không có người đứng sau), nhưng không để một câu sai của tài liệu tới cả lớp khi chưa có người xem.
+
+Tương tự: "đã báo TA" đổi thành "đã xếp vào hàng chờ, TA nhận từ 08:00".
 
 ## §5. Prototype  (chặng 5)
 - Link hoặc file · công cụ · phần nào mock · có lời gọi AI thật không.
@@ -266,4 +394,3 @@ Thêm:
 
 ## §7. Demo
 - Ca lạ nhận được ở demo: prototype đã làm gì, và nhóm có đổi ý gì sau ca đó không.
-```
