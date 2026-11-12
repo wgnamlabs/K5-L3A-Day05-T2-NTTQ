@@ -272,7 +272,6 @@ Thiết kế phải cứu lỗi bằng cách:
 - Nếu không ai duyệt, bản nháp không bao giờ tự động được công bố.
 
 
->>>>>>> e1e22c34134593101e4e864f6e61a1b097e28513
 ## §4. Mức tự chủ  (chặng 4)
 Với mỗi tool:
 - Mức của nhóm (tự làm / cần người duyệt / cấm). Nếu cần người duyệt: ai duyệt · người duyệt thấy gì · quá hạn thì sao.
