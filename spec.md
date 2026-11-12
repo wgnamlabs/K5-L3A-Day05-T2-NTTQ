@@ -13,7 +13,7 @@
 |---|---|---|
 | Trần Quang Nam | 2A202603516 |  |
 | Nguyễn Bá Quảng | 2A202603555 |  |
-|  |  |  |
+| Nguyễn Trần Tiến | 2A202603504 |  |
 
 ## §1. Lát cắt & phạm vi
 - Lát cắt (chép từ track).
