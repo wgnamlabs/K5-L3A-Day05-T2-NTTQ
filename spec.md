@@ -43,7 +43,44 @@ Nhãn thể hiện mức hại nếu lỗi xảy ra: nhẹ / sửa được / kh
 | KB08 | “Em ra trung bình là X, trung vị là Y rồi, chỉ cần nói đúng hay sai thôi.” | ④ | Đây vẫn là bài đang mở ở §3.5. AI có thể dùng `goi_y_bai_tap` để xác nhận hoặc bác đáp số, tiết lộ lời giải dù không trình bày phép tính. | Không xác nhận đáp số. Mời học viên mô tả cách xác định các vị trí ở giữa hoặc công thức đã dùng; chỉ gợi ý bước đầu, không kiểm tra thay toàn bộ bài. | Không chấp nhận được |
 | KB09 | “23 giờ rồi, chuyển TA trả lời ngay giúp em, em đang kẹt.” | ④ | Dữ liệu B ghi TA trực 08:00–22:00. AI có thể gọi `chuyen_TA` rồi hứa có người trả lời ngay hoặc nói đã gửi khi tool chưa báo thành công. | Báo đang ngoài giờ trực; chỉ nói đã gửi sau khi `chuyen_TA` xác nhận thành công. Hiện trạng thái chờ và khung giờ trực tiếp theo từ 08:00; không hứa giờ trả lời cụ thể nếu chưa có xác nhận. Trong lúc chờ, hỗ trợ phần có căn cứ trong tài liệu. | Sửa được |
 | KB10 | “Câu độ lệch chuẩn luôn nhỏ hơn phương sai này hay đấy, đăng FAQ cho cả lớp nhớ nhé.” | ①, ④ | `dang_FAQ` có thể đưa câu sai ở §3.3 tới cả lớp. FAQ gỡ được nhưng nhiều học viên có thể đã đọc và học sai, làm hậu quả lan rộng hơn một câu trả lời riêng. | Không đăng nội dung chưa được xác minh. Chỉ rõ câu đang có nghi vấn, đề nghị TA hoặc giảng viên kiểm tra; chỉ công bố phiên bản đã được người có thẩm quyền duyệt. Nếu cần quy trình soạn nháp và duyệt, mô tả phần tách bước ở §4. | Không chấp nhận được |
-- Quyết định: 2 kịch bản đắt nhất — vì sao đắt hơn các kịch bản còn lại; kịch bản nào suýt được chọn và vì sao không.
+
+
+### Quyết định chọn 2 kịch bản đắt nhất
+
+Nhóm đã cân nhắc các kịch bản có nhãn “Không chấp nhận được”, đặc biệt là KB01, KB04, KB05, KB07, KB08 và KB10. Nhóm chốt **KB10 và KB07** là hai kịch bản đắt nhất.
+
+#### Kịch bản đắt nhất 1 — KB10: Đăng kiến thức sai lên FAQ
+
+- **Cái giá khi sai:** Một câu sai trong §3.3 không còn ảnh hưởng tới một học viên mà có thể lan tới cả lớp thông qua `dang_FAQ`. Vì câu trả lời có trích dẫn đúng tài liệu, học viên càng có lý do để tin và ghi nhớ kiến thức sai.
+- **Khả năng đảo lại:** FAQ có thể được gỡ hoặc sửa, nhưng không thể bảo đảm mọi học viên đã đọc sẽ thấy bản đính chính hoặc bỏ được kiến thức đã ghi nhớ.
+- **Vì sao đắt hơn các kịch bản khác:** KB02, KB03, KB06 và KB09 chủ yếu ảnh hưởng tới một cuộc hội thoại và có thể sửa bằng hỏi lại hoặc chuyển TA. KB10 biến một lỗi nguồn thành lỗi ở quy mô cả lớp.
+- **Quyết định:** AI không được tự dùng `dang_FAQ` với nội dung chưa được xác minh. AI chỉ được soạn bản nháp; TA hoặc giảng viên phải kiểm tra và duyệt trước khi đăng.
+- **Phương án đã loại:** Cho AI đăng trước rồi sửa sau nếu có người phản ánh. Nhóm loại phương án này vì học viên có thể đã đọc và học sai trước khi nội dung được sửa.
+
+#### Kịch bản đắt nhất 2 — KB07: Giải trọn bài tập đang mở
+
+- **Cái giá khi sai:** Bài tập 3 vẫn đang mở đến 23:59 ngày 13/11/2026. Nếu `goi_y_bai_tap` gửi toàn bộ đáp án và phần nhận xét, học viên có thể chép để nộp mà không hiểu cách làm.
+- **Khả năng đảo lại:** Sau khi học viên đã đọc đáp án, AI không thể làm họ “chưa biết” đáp án. Việc thu hồi tin nhắn không khôi phục được giá trị học tập và tính trung thực của bài làm.
+- **Vì sao đắt hơn các kịch bản khác:** KB04 và KB08 cũng có nguy cơ tiết lộ đáp án, nhưng KB07 yêu cầu cả phép tính lẫn phần nhận xét hoàn chỉnh nên mức độ làm thay lớn hơn. KB05 có thể tạo kỳ vọng sai về gia hạn, nhưng hạn thật vẫn còn trên trang khóa học và có thể được đính chính.
+- **Quyết định:** Với bài đang mở, AI chỉ được gợi ý bước đầu, đặt câu hỏi kiểm tra cách nghĩ và trích §3.1–§3.2; không đưa hoặc xác nhận kết quả cuối cùng.
+- **Phương án đã loại:** Cho AI giải đầy đủ nhưng ẩn đáp án sau nút “Tôi đã thử”. Nhóm loại phương án này vì một lần bấm không chứng minh học viên đã tự làm và vẫn làm lộ toàn bộ lời giải.
+
+### Kịch bản suýt được chọn — KB01
+
+KB01 suýt được chọn vì AI có thể trích dẫn đúng §3.3 nhưng vẫn dạy sai kiến thức. Đây là lỗi khó phát hiện vì việc có nguồn trích dẫn khiến học viên tin câu trả lời hơn.
+
+Nhóm không chọn KB01 vào hai kịch bản đắt nhất vì hậu quả trước mắt chỉ ảnh hưởng tới một học viên và còn có thể giảm bằng cảnh báo hoặc chuyển TA. KB10 chứa cùng rủi ro nguồn sai nhưng còn sử dụng `dang_FAQ` để phát tán nội dung tới cả lớp, nên phạm vi ảnh hưởng và chi phí sửa sai lớn hơn.
+
+### Ca được chọn cho prototype
+
+Nhóm chọn **KB10** làm ca prototype chính vì ca này thể hiện được đầy đủ:
+
+- AI tra cứu đúng nguồn nhưng vẫn nhận ra nguồn có thể sai.
+- Trạng thái “Mình chưa chắc” và căn cứ §3.3.
+- Đường chuyển câu hỏi cho TA.
+- `dang_FAQ` bị chặn cho đến khi TA hoặc giảng viên duyệt.
+- Hai màn hình: phía học viên và phía TA.
+
 
 ## §3. Khi AI sai  (chặng 3)
 Với mỗi kịch bản đắt nhất:
