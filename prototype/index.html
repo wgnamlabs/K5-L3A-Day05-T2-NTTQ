@@ -67,6 +67,7 @@ const $$ = s => document.querySelectorAll(s);
 
 let currentView = 'student'; // 'student' | 'ta'
 let step = 0;
+let deferred = false;
 
 /* Logic mức tự chủ (policy.js + app.js, spec.md §4): bản nháp FAQ, duyệt qua chính sách, nhật ký.
    Các hàm esc, renderTADraftAndActions, renderPolicyLog, taApprove, taReject... nằm trong app.js. */
@@ -151,13 +152,17 @@ function renderStudentChat(el) {
 
 function renderStudentActions() {
   if (step >= 2) return ''; // Đã gửi rồi
+  if (deferred) return `
+    <div class="status-box" style="margin-top:10px">Bạn đã chọn để sau. FAQ vẫn chưa được đăng; bạn có thể gửi TA kiểm tra khi muốn.</div>
+    <button class="btn btn-primary" onclick="openConfirmModal()">Gửi TA kiểm tra</button>
+  `;
   return `
     <div class="btn-group" style="margin-top:10px">
       <button class="btn btn-primary" onclick="openConfirmModal()">
         <span class="ann-num">3</span>Gửi TA kiểm tra
       </button>
       <button class="btn btn-outline" onclick="showWhy()">Xem vì sao có nghi vấn</button>
-      <button class="btn">Để sau</button>
+      <button class="btn" onclick="deferReview()">Để sau</button>
     </div>
   `;
 }
@@ -310,6 +315,12 @@ function openConfirmModal() {
   $('#modal-confirm').classList.add('show');
 }
 
+function deferReview() {
+  deferred = true;
+  step = 0;
+  render();
+}
+
 function showWhy() {
   alert('Phương sai nằm trong (0, 1) thì căn bậc hai lớn hơn chính số đó.\nVí dụ: Var = 0,25 → SD = √0,25 = 0,5 > 0,25.\nNguồn: §3.3 Tài liệu buổi 3.');
 }
@@ -344,7 +355,11 @@ $('#toggle-ann').onchange = e => {
 
 // Modal confirm
 $('#btn-confirm-send').onclick = () => {
-  ghiNhatKyGuiTA(); // app.js: ghi nhật ký chính sách cho chuyen_TA và soan_nhap_FAQ
+  const ketQua = ghiNhatKyGuiTA(); // app.js: chính sách phải cho phép trước khi chuyển trạng thái
+  if (!ketQua.ok) {
+    alert('Chưa gửi được: ' + ketQua.ly_do);
+    return;
+  }
   step = 2;
   $('#modal-confirm').classList.remove('show');
   render();

@@ -58,10 +58,12 @@ function logPolicy(tool, mota, kq) {
 
 /* Gọi từ nút "Xác nhận gửi" của học viên (index.html). */
 function ghiNhatKyGuiTA() {
-  logPolicy('chuyen_TA', 'học viên đã xác nhận bản tóm tắt',
-    CS.kiemTraHanhDong('chuyen_TA', { hocVienXacNhan: true }));
+  const ketQuaGui = CS.kiemTraHanhDong('chuyen_TA', { hocVienXacNhan: true });
+  logPolicy('chuyen_TA', 'học viên đã xác nhận bản tóm tắt', ketQuaGui);
+  if (!ketQuaGui.ok) return ketQuaGui;
   logPolicy('soan_nhap_FAQ', 'AI soạn nháp, gắn cờ chưa xác minh',
     CS.kiemTraHanhDong('soan_nhap_FAQ', { noiDung: NHAP_BAN_DAU }));
+  return ketQuaGui;
 }
 
 function setDraft(v) { taDraft = v; taMsg = null; }

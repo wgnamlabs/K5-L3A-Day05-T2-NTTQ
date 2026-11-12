@@ -1,6 +1,5 @@
 /* Chính sách mức tự chủ của trợ lý học bài (T2) — bản mã hoá của spec.md §4.
- * Một nguồn duy nhất: màn hình TA (app.js) và kiểm thử (test-policy.js) cùng dùng file này.
- * Không phụ thuộc trình duyệt nên chạy được bằng Node: node prototype/test-policy.js
+ * Màn hình TA (app.js) dùng chính sách này trước khi duyệt và đăng FAQ.
  */
 (function (root) {
   'use strict';
@@ -75,6 +74,7 @@
         }
         if (ctx.daDuyet !== true) return chan('Người duyệt chưa xác nhận đã kiểm tra nội dung.');
         const noiDung = String(ctx.noiDung || '');
+        if (!noiDung.trim()) return chan('Bản đăng FAQ trống: cần có nội dung đã kiểm tra trước khi đăng.');
         if (noiDung.includes(DAU_NHAP)) return chan('Bản nháp còn dấu "chưa xác minh": sửa lại trước khi đăng.');
         if (noiDung.includes(CAU_NGHI_VAN)) return chan('Bản nháp vẫn còn câu nghi vấn của §3.3: không đăng.');
         return cho();
