@@ -70,6 +70,14 @@ let step = 0;
 // step 3: TA duyệt → FAQ đã duyệt (TA view)
 // step 4: học viên thấy trạng thái đã duyệt
 
+// Hỗ trợ mở trực tiếp view TA qua query param hoặc hash (#ta hoặc ?view=ta)
+const searchParams = new URLSearchParams(window.location.search);
+if (searchParams.get('view') === 'ta' || window.location.hash === '#ta') {
+  currentView = 'ta';
+  step = 2;
+}
+
+
 /* ===== Render hàm chính ===== */
 function render() {
   renderChat();
@@ -383,8 +391,15 @@ document.addEventListener('keydown', e => {
   }
 });
 
+// Cập nhật trạng thái nút nếu mở trực tiếp view khác
+if (currentView === 'ta') {
+  $$('.view-toggle button[data-view]').forEach(b => b.classList.remove('active'));
+  document.querySelector('[data-view="ta"]')?.classList.add('active');
+}
+
 // Render lần đầu
 render();
 </script>
 </body>
 </html>
+

@@ -402,7 +402,9 @@ Prototype có hai màn hình chuyển bằng nút trên thanh điều hướng:
 
 ### 5.3 Ảnh có đánh số — prototype học viên (ca KB10)
 
-*(Ảnh 1 — Màn hình học viên)*
+![Màn hình học viên](prototype/screenshot-1-student.png)
+
+*(Ảnh 1 — Màn hình học viên khi AI phát hiện tài liệu có nghi vấn, chặn đăng FAQ và cho đường gửi TA)*
 
 | Vị trí | Thể hiện gì | Nguyên tắc HAX/PAIR | Mức tự chủ |
 |---|---|---|---|
@@ -412,7 +414,9 @@ Prototype có hai màn hình chuyển bằng nút trên thanh điều hướng:
 
 ### 5.4 Ảnh có đánh số — prototype TA (ca KB10)
 
-*(Ảnh 2 — Màn hình TA)*
+![Màn hình TA](prototype/screenshot-2-ta.png)
+
+*(Ảnh 2 — Màn hình TA tiếp nhận yêu cầu từ hàng chờ, cờ nghi vấn và kiểm duyệt bản nháp FAQ)*
 
 | Vị trí | Thể hiện gì | Nguyên tắc HAX/PAIR | Mức tự chủ |
 |---|---|---|---|
