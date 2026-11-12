@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prototype · T2 Giáo dục — Trợ lý học bài · Ca KB10</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <h1>Prototype · T2 Giáo dục — Trợ lý học bài tối muộn</h1>
+  <div class="subtitle">Ca <b>KB10</b>: học viên xin đăng FAQ nội dung có nghi vấn tại §3.3. Dữ liệu dựng, không gọi AI thật, không gửi dữ liệu đi đâu.</div>
+  <div class="view-toggle">
+    <span>Màn hình:</span>
+    <button data-view="student" class="active">🎓 Học viên</button>
+    <button data-view="ta">🧑‍🏫 TA</button>
+    <span style="margin-left:14px">
+      <label><input type="checkbox" id="toggle-ann" checked> Hiện số chú thích HAX/PAIR</label>
+    </span>
+  </div>
+</header>
+
+<main>
+  <!-- ====== CỘT TRÁI: CHAT ====== -->
+  <section class="chat-frame">
+    <div class="chat-bar">
+      <span id="chat-title">Trợ lý học bài · Khoá Nhập môn PTDL</span>
+      <span id="chat-time">23:02</span>
+    </div>
+    <div class="chat-area" id="chat"></div>
+  </section>
+
+  <!-- ====== CỘT PHẢI: PANEL ====== -->
+  <aside id="panels"></aside>
+</main>
+
+<div class="site-footer">
+  LAB5 · AI20K K5 · Ngày 5 · Track 2 Giáo dục · Nhóm NTTQ · Prototype mock — không gọi AI thật.
+</div>
+
+<!-- ====== MODAL XÁC NHẬN GỬI TA ====== -->
+<div class="modal-overlay" id="modal-confirm">
+  <div class="modal-card">
+    <b>Gửi cho TA kiểm tra?</b>
+    <p>Nội dung sẽ gửi: câu hỏi của bạn, đoạn §3.3 và lý do có nghi vấn.<br>
+    <b>Nội dung này chưa được đăng lên FAQ.</b></p>
+    <p style="font-size:13px;color:#6b6f6c">Đang ngoài giờ trực (08:00–22:00). Yêu cầu sẽ vào hàng chờ; TA có thể tiếp nhận từ 08:00.</p>
+    <div class="btn-group">
+      <button class="btn btn-primary" id="btn-confirm-send">Xác nhận gửi</button>
+      <button class="btn" id="btn-cancel-send">Để sau</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===================================================================
+   Prototype T2 — KB10: Tài liệu sai & xin đăng FAQ
+   Mock data — không gọi AI thật
+   =================================================================== */
+
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+
+let currentView = 'student'; // 'student' | 'ta'
+let step = 0;
+// step 0: tin học viên + AI trả lời chưa chắc
+// step 1: học viên bấm "Gửi TA kiểm tra" → modal
+// step 2: đã gửi → hàng chờ
+// step 3: TA duyệt → FAQ đã duyệt (TA view)
+// step 4: học viên thấy trạng thái đã duyệt
+
+/* ===== Render hàm chính ===== */
+function render() {
+  renderChat();
+  renderPanels();
+}
+
+/* ===== Chat area ===== */
+function renderChat() {
+  const chat = $('#chat');
+  if (currentView === 'student') {
+    renderStudentChat(chat);
+  } else {
+    renderTAView(chat);
+  }
+}
+
+function renderStudentChat(el) {
+  let html = '';
+
+  // Tin học viên
+  html += msgUser('Câu độ lệch chuẩn luôn nhỏ hơn phương sai này hay đấy, đăng FAQ cho cả lớp nhớ nhé.');
+
+  // AI trả lời
+  html += msgAI(`
+    <span class="badge badge-warn"><span class="ann-num">2</span>Mình chưa chắc — nội dung cần được kiểm tra</span>
+    <p>Mình tìm thấy đúng câu <em>"Vì là căn bậc hai, độ lệch chuẩn luôn nhỏ hơn phương sai"</em> tại <b>Tài liệu buổi 3, §3.3</b>. Tuy nhiên, quy tắc "luôn nhỏ hơn" có dấu hiệu không đúng trong mọi trường hợp.</p>
+    <p>Ví dụ: nếu phương sai = 0,25 thì √0,25 = 0,5 → lớn hơn 0,25.</p>
+    <p><b>Mình chưa đăng nội dung này lên FAQ.</b></p>
+    <div class="source-card">
+      <span class="ann-num">1</span>
+      <b>Nguồn:</b> Tài liệu buổi 3 · <code>§3.3</code> Phương sai và độ lệch chuẩn<br>
+      <em>"Vì là căn bậc hai, độ lệch chuẩn luôn nhỏ hơn phương sai."</em><br>
+      <span style="color:var(--warn)">⚠ Câu này cần được kiểm tra</span>
+    </div>
+    <div class="status-box box-warn" style="margin-top:10px">
+      <span class="ann-num">3</span>
+      <b>FAQ chưa được đăng</b> — nội dung có nghi vấn cần TA hoặc giảng viên kiểm tra trước.
+    </div>
+    ${renderStudentActions()}
+  `);
+
+  // Bước sau khi gửi TA
+  if (step >= 2) {
+    html += msgAI(`
+      <div class="status-box box-ok">
+        <b>✓ Đã gửi TA kiểm tra</b><br>
+        Câu hỏi, đoạn §3.3 và lý do nghi vấn đã được xếp vào hàng chờ.<br>
+        <span style="font-size:13px;color:var(--muted)">Ngoài giờ trực · TA trực 08:00–22:00 · TA có thể tiếp nhận từ 08:00 ngày 13/11.</span>
+      </div>
+    `);
+  }
+
+  if (step >= 4) {
+    html += msgAI(`
+      <div class="status-box box-approved">
+        <b>✓ TA đã duyệt và đăng FAQ</b><br>
+        Phiên bản đã sửa đã được đăng lên FAQ cả lớp.<br>
+        <span style="font-size:13px">"Độ lệch chuẩn không luôn nhỏ hơn phương sai. Ví dụ phương sai 0,25 thì SD = 0,5."</span>
+      </div>
+    `);
+  }
+
+  el.innerHTML = html;
+}
+
+function renderStudentActions() {
+  if (step >= 2) return ''; // Đã gửi rồi
+  return `
+    <div class="btn-group" style="margin-top:10px">
+      <button class="btn btn-primary" onclick="openConfirmModal()">
+        <span class="ann-num">3</span>Gửi TA kiểm tra
+      </button>
+      <button class="btn btn-outline" onclick="showWhy()">Xem vì sao có nghi vấn</button>
+      <button class="btn">Để sau</button>
+    </div>
+  `;
+}
+
+function renderTAView(el) {
+  let html = '';
+  $('#chat-title').textContent = 'Hàng chờ TA · Khoá Nhập môn PTDL';
+  $('#chat-time').textContent = '08:05 (sáng hôm sau)';
+
+  if (step < 2) {
+    html = `
+      <div style="text-align:center;padding:60px 20px;color:var(--muted)">
+        <p style="font-size:40px;margin:0">📭</p>
+        <p>Chưa có yêu cầu nào trong hàng chờ.<br>
+        <span style="font-size:13px">Học viên chưa gửi yêu cầu kiểm tra.</span></p>
+      </div>
+    `;
+  } else {
+    // Có yêu cầu trong hàng chờ
+    html = `
+      <div class="ta-queue-item ${step >= 3 ? 'item-approved' : 'item-pending'}">
+        <div class="ta-queue-meta">
+          Yêu cầu #1 · Học viên HV-042 · Gửi lúc 23:03 ngày 12/11
+        </div>
+        <div class="ta-flag">Nội dung có nghi vấn tại §3.3</div>
+        <div class="ta-queue-content">
+          <b>Câu hỏi:</b> "Câu độ lệch chuẩn luôn nhỏ hơn phương sai này hay đấy, đăng FAQ cho cả lớp nhớ nhé."
+        </div>
+        <div class="source-card">
+          <b>Đoạn tài liệu:</b> §3.3 — <em>"Vì là căn bậc hai, độ lệch chuẩn luôn nhỏ hơn phương sai."</em><br>
+          <b>Lý do AI nghi vấn:</b> Nếu phương sai = 0,25 thì √0,25 = 0,5 > 0,25. Quy tắc "luôn nhỏ hơn" sai khi phương sai ∈ (0, 1).<br>
+          <b>Ví dụ phản chứng AI đã tìm:</b> Phương sai = 0,25 → SD = 0,5 > 0,25.
+        </div>
+
+        ${step < 3 ? renderTADraftAndActions() : renderTAApproved()}
+      </div>
+    `;
+  }
+  el.innerHTML = html;
+}
+
+function renderTADraftAndActions() {
+  return `
+    <div class="faq-draft">
+      <div class="draft-label">Bản nháp FAQ — chưa đăng</div>
+      <p><b>Hỏi:</b> Độ lệch chuẩn luôn nhỏ hơn phương sai đúng không?</p>
+      <p><b>Trả lời (nháp):</b> Tài liệu §3.3 viết "Vì là căn bậc hai, độ lệch chuẩn luôn nhỏ hơn phương sai." Câu này không đúng trong mọi trường hợp — xem ví dụ phản chứng ở trên. <span style="color:var(--warn)">⚠ Cần TA/giảng viên xác nhận và chỉnh sửa trước khi đăng.</span></p>
+    </div>
+    <div class="ta-actions">
+      <button class="btn btn-primary" onclick="taApprove()">
+        <span class="ann-num">3</span>Sửa và duyệt đăng FAQ
+      </button>
+      <button class="btn btn-outline" onclick="taReplyPrivate()">Trả lời riêng cho học viên</button>
+      <button class="btn">Từ chối đăng</button>
+    </div>
+  `;
+}
+
+function renderTAApproved() {
+  return `
+    <div class="faq-published">
+      <div class="published-label">✓ FAQ đã duyệt và đăng</div>
+      <p><b>Hỏi:</b> Độ lệch chuẩn luôn nhỏ hơn phương sai đúng không?</p>
+      <p><b>Trả lời (đã duyệt bởi TA):</b> Không phải lúc nào cũng đúng. Tài liệu §3.3 viết "Vì là căn bậc hai, độ lệch chuẩn luôn nhỏ hơn phương sai" — câu này sai khi phương sai < 1. Ví dụ: phương sai = 0,25 thì SD = √0,25 = 0,5 > 0,25. Quy tắc chính xác: SD = √Var; SD < Var khi Var > 1, SD > Var khi 0 < Var < 1, SD = Var khi Var = 0 hoặc Var = 1.</p>
+    </div>
+    <div style="margin-top:8px">
+      <span class="badge badge-approved">✓ Đã duyệt bởi TA lúc 08:12</span>
+    </div>
+  `;
+}
+
+/* ===== Helper: tạo tin nhắn ===== */
+function msgUser(text) {
+  return `<div class="msg-user">${text}</div>`;
+}
+
+function msgAI(content) {
+  return `<div class="msg-ai"><div class="sender">Trợ lý AI · Khoá học</div>${content}</div>`;
+}
+
+/* ===== Panels bên phải ===== */
+function renderPanels() {
+  const aside = $('#panels');
+
+  if (currentView === 'ta') {
+    aside.innerHTML = `
+      <div class="panel">
+        <h2>Hàng chờ TA</h2>
+        <div class="promise-box">
+          TA kiểm tra nội dung trước khi đăng FAQ. Nếu nội dung có cờ nghi vấn, TA phải xác minh trước khi duyệt. Nút duyệt hiện cờ cảnh báo bên cạnh.
+        </div>
+      </div>
+      ${renderToolTable()}
+      ${renderAnnotations()}
+    `;
+    return;
+  }
+
+  aside.innerHTML = `
+    <div class="panel">
+      <h2>Trạng thái ca hiện tại</h2>
+      <div class="promise-box" id="status-promise">
+        ${getStatusPromise()}
+      </div>
+    </div>
+    ${renderToolTable()}
+    ${renderAnnotations()}
+  `;
+}
+
+function getStatusPromise() {
+  if (step === 0) return 'AI phát hiện nội dung có nghi vấn tại §3.3. FAQ <b>chưa được đăng</b>. Học viên có thể gửi TA kiểm tra hoặc để sau.';
+  if (step === 1) return 'Đang chờ học viên xác nhận gửi TA...';
+  if (step === 2) return 'Đã gửi TA. Yêu cầu nằm trong hàng chờ. TA có thể tiếp nhận từ 08:00. <b>FAQ vẫn chưa được đăng.</b>';
+  if (step >= 3) return 'TA đã duyệt. FAQ phiên bản đã sửa đã được đăng cho cả lớp.';
+  return '';
+}
+
+function renderToolTable() {
+  const tools = [
+    ['tra_cuu_tai_lieu', 'Tự làm', 'pill-auto', 'Chỉ đọc. Luôn hiện mã mục (§3.x). Đoạn nghi vấn gắn cờ.'],
+    ['goi_y_bai_tap', 'Tự làm theo luật', 'pill-auto', 'Bài đang mở: gợi ý phương pháp. Đáp số: CẤM.'],
+    ['chuyen_TA', 'Cần HV xác nhận', 'pill-ask', 'Học viên xem tóm tắt rồi bấm gửi. Ngoài giờ → hàng chờ.'],
+    ['dang_FAQ', 'Tách 2 bước', 'pill-split', 'soạn nháp: Tự làm. duyệt đăng: Cần TA/GV.', true],
+  ];
+
+  return `
+    <div class="panel">
+      <h2>Mức tự chủ 4 tool</h2>
+      <table>
+        <tr><th>Tool</th><th>Mức</th><th>Lý do (cái giá khi sai)</th></tr>
+        ${tools.map(t => `
+          <tr class="${t[4] ? 'row-highlight' : ''}">
+            <td><code>${t[0]}</code></td>
+            <td><span class="pill ${t[2]}">${t[1]}</span></td>
+            <td>${t[3]}</td>
+          </tr>
+        `).join('')}
+      </table>
+    </div>
+  `;
+}
+
+function renderAnnotations() {
+  const anns = [
+    ['1', 'HAX G11 + PAIR Explainability & Trust', 'Thẻ nguồn: trích nguyên văn §3.3 và trạng thái bài. Học viên tự kiểm căn cứ.'],
+    ['2', 'HAX G2 — Làm rõ AI làm tốt đến đâu', 'Nhãn "Mình chưa chắc" nói rõ giới hạn. Không dùng phần trăm không hiệu chỉnh.'],
+    ['3', 'HAX G10 + PAIR Errors & Graceful Failure', 'FAQ bị chặn. Nút "Gửi TA kiểm tra" là đường lui. TA duyệt trước khi đăng.'],
+  ];
+
+  return `
+    <div class="panel">
+      <h2>Chú thích HAX/PAIR trên prototype</h2>
+      <ul class="ann-list">
+        ${anns.map(a => `
+          <li><span class="ann-num">${a[0]}</span><b>${a[1]}</b> — ${a[2]}</li>
+        `).join('')}
+      </ul>
+    </div>
+  `;
+}
+
+/* ===== Hành động ===== */
+function openConfirmModal() {
+  step = 1;
+  $('#modal-confirm').classList.add('show');
+}
+
+function showWhy() {
+  alert('Phương sai nằm trong (0, 1) thì căn bậc hai lớn hơn chính số đó.\nVí dụ: Var = 0,25 → SD = √0,25 = 0,5 > 0,25.\nNguồn: §3.3 Tài liệu buổi 3.');
+}
+
+function taApprove() {
+  step = 3;
+  render();
+}
+
+function taReplyPrivate() {
+  alert('(Mock) TA trả lời riêng cho học viên: "Đúng rồi em, câu trong tài liệu sai. Thầy sẽ sửa lại. Cảm ơn em đã phát hiện."');
+}
+
+/* ===== Khởi tạo sự kiện ===== */
+// Toggle view
+$$('.view-toggle button[data-view]').forEach(btn => {
+  btn.onclick = () => {
+    $$('.view-toggle button[data-view]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentView = btn.dataset.view;
+
+    // Reset chat bar
+    if (currentView === 'student') {
+      $('#chat-title').textContent = 'Trợ lý học bài · Khoá Nhập môn PTDL';
+      $('#chat-time').textContent = '23:02';
+    }
+    render();
+  };
+});
+
+// Toggle annotations
+$('#toggle-ann').onchange = e => {
+  document.body.classList.toggle('hide-annotations', !e.target.checked);
+};
+
+// Modal confirm
+$('#btn-confirm-send').onclick = () => {
+  step = 2;
+  $('#modal-confirm').classList.remove('show');
+  render();
+};
+
+$('#btn-cancel-send').onclick = () => {
+  step = 0;
+  $('#modal-confirm').classList.remove('show');
+};
+
+// Keyboard: nếu đang ở TA view, bấm Enter để mô phỏng duyệt
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') {
+    if (currentView === 'student' && step < 2) {
+      openConfirmModal();
+    } else if (currentView === 'student' && step === 2) {
+      // Chuyển sang TA
+      $$('.view-toggle button[data-view]').forEach(b => b.classList.remove('active'));
+      document.querySelector('[data-view="ta"]').classList.add('active');
+      currentView = 'ta';
+      render();
+    } else if (currentView === 'ta' && step === 2) {
+      taApprove();
+    } else if (currentView === 'ta' && step >= 3) {
+      // Quay lại student
+      $$('.view-toggle button[data-view]').forEach(b => b.classList.remove('active'));
+      document.querySelector('[data-view="student"]').classList.add('active');
+      currentView = 'student';
+      step = 4;
+      render();
+    }
+  }
+});
+
+// Render lần đầu
+render();
+</script>
+</body>
+</html>
