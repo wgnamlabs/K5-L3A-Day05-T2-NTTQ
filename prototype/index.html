@@ -94,40 +94,29 @@ main{max-width:1280px;margin:20px 0;padding:0 28px 28px;grid-template-columns:42
       <div class="chat-heading"><div><p class="eyebrow">KHÔNG CẦN TỰ MẮC KẸT</p><h2 id="chat-title">Trợ lý học bài · Buổi 3 · 23:00</h2></div><label class="annotation-toggle"><input id="annotations" type="checkbox" checked> Chú thích HAX/PAIR</label></div>
       <div id="conversation" role="log" aria-label="Hội thoại với trợ lý AI"></div>
       <section class="source"><h3><span class="annotation">1</span> Căn cứ để bạn kiểm tra</h3><details id="source-details"><summary id="source-title"></summary><blockquote id="source-text"></blockquote><p id="source-note" class="muted"></p></details></section>
-      <div class="actions"><button id="edit" class="secondary"><span class="annotation">3</span> Sửa câu hỏi / báo chưa đúng ý</button><button id="transfer" class="primary">Chuyển TA <span aria-hidden="true">↗</span></button></div>
+      <div class="actions"><button id="edit" class="secondary"><span class="annotation">3</span> Sửa câu hỏi / báo chưa đúng ý</button><button id="transfer" class="primary">
+  <span class="annotation">3</span>
+  Chuyển TA <span aria-hidden="true">↗</span>
+</button></div>
       <form id="question-form" hidden><label for="question">Bạn muốn sửa hoặc làm rõ điều gì?</label><textarea id="question" rows="3" required maxlength="2000"></textarea><div class="actions"><button class="primary" type="submit">Gửi câu hỏi đã sửa</button><button class="secondary" id="cancel-edit" type="button">Hủy</button></div></form>
       <p id="status" role="status" class="status"></p>
       <footer>Trợ lý AI có thể sai. Hãy kiểm tra căn cứ và hỏi TA khi cần.<br><span class="muted">Prototype dùng dữ liệu dựng; không gọi AI thật và không thông báo tới TA thật.</span></footer>
     </section>
-    <section class="legend" aria-label="Chú thích nguyên tắc"><span><b>1</b> G11 · Hiện căn cứ để kiểm tra</span><span><b>2</b> G10 · Thu hẹp khi nghi ngờ</span><span><b>3</b> G9 · Sửa dễ, có đường chuyển người</span></section>
+    <section class="legend" aria-label="Chú thích nguyên tắc">
+        <span><b>1</b> G11 · Hiện căn cứ để kiểm tra</span>
+        <span><b>2</b> G2 · Làm rõ AI chắc đến đâu</span>
+        <span><b>3</b> G10 · Thu hẹp hành động, có đường lui</span>
+    </section>
+
   </main>
   <dialog id="transfer-dialog" aria-labelledby="dialog-title"><form method="dialog"><div class="dialog-heading"><span class="simulation">Mô phỏng</span><button aria-label="Đóng bản xem trước" class="close" value="cancel">×</button></div><h2 id="dialog-title">Xem trước câu hỏi gửi TA</h2><p>TA sẽ nhận câu hỏi và bối cảnh dưới đây khi bạn xác nhận.</p><pre id="transfer-preview"></pre><label for="transfer-note">Điểm bạn còn vướng (không bắt buộc)</label><textarea id="transfer-note" rows="2" maxlength="1000"></textarea><p>Hiện ngoài giờ trực. Yêu cầu sẽ vào hàng chờ; không có cam kết trả lời lúc 08:00.</p><label class="failure-option"><input type="checkbox" id="simulate-failure"> Thử tình huống gửi thất bại</label><p id="dialog-status" role="status"></p><div class="actions"><button value="cancel" class="secondary">Quay lại</button><button id="confirm-transfer" type="button" class="primary">Xác nhận gửi mô phỏng</button></div></form></dialog>
+<script src="data.js"></script>
 <script>
 /* Khung tương tác học viên của Quảng. Không gọi AI, không gửi TA thật.
  * Sự kiện student:transfer-confirmed cung cấp detail để tích hợp app.js của Tiến.
  */
-const cases = {
-  KB10: {
-    question: 'Câu độ lệch chuẩn luôn nhỏ hơn phương sai này hay đấy, đăng FAQ cho cả lớp nhớ nhé.',
-    confidence: 'Mình chưa chắc: câu trong tài liệu cần được kiểm tra',
-    answer: 'Mình chưa thể đăng câu này lên FAQ. Ở §3.3 có câu “độ lệch chuẩn luôn nhỏ hơn phương sai”, nhưng khẳng định “luôn” có dấu hiệu sai: căn bậc hai của một số nằm giữa 0 và 1 lớn hơn chính số đó. Có trích dẫn không đồng nghĩa nội dung đã được xác minh.',
-    next: 'Bạn có thể mở đoạn gốc bên dưới hoặc chuyển câu hỏi cho TA kiểm tra. Nội dung nghi vấn sẽ không được đăng FAQ khi chưa có TA hoặc giảng viên xác minh và duyệt.',
-    source: 'Tài liệu buổi 3 · §3.3 · Phương sai và độ lệch chuẩn',
-    quote: 'Phương sai đo mức độ phân tán của dữ liệu quanh trung bình. Độ lệch chuẩn là căn bậc hai của phương sai, có cùng đơn vị với dữ liệu. Vì là căn bậc hai, độ lệch chuẩn luôn nhỏ hơn phương sai.',
-    note: 'Đoạn gốc chứa câu nghi vấn, chưa phải nội dung đã xác minh. Không có nút tự đăng FAQ.',
-    summary: 'Mục §3.3 có câu nghi vấn. AI đã cảnh báo và chưa đăng FAQ. Cần TA/giảng viên kiểm tra trước khi công bố.'
-  },
-  KB07: {
-    question: 'Giải trọn bài 3, viết luôn phần nhận xét để em nộp trước hạn.',
-    confidence: 'Đủ căn cứ cho gợi ý bước đầu',
-    answer: 'Bài 3 đang mở đến 23:59 ngày 13/11/2026 theo trang khoá học. Mình không thể giải trọn bài, viết nhận xét hộ hoặc xác nhận đáp số khi bài còn mở. Mình có thể giúp bạn bắt đầu: theo §3.2, để tìm trung vị, trước hết hãy sắp xếp dữ liệu tăng dần. Bạn thử viết lại dãy đã sắp xếp nhé; chưa cần tính kết quả.',
-    next: 'Bạn tự thực hiện bước đầu hoặc đọc lại §3.2. Nếu còn vướng về phương pháp, hãy sửa câu hỏi hoặc chuyển TA. Trợ lý không kiểm tra đáp số hay đưa thêm từng bước để ghép thành lời giải.',
-    source: 'Tài liệu buổi 3 · §3.2 · Trung vị',
-    quote: 'Giá trị đứng giữa khi sắp xếp dữ liệu tăng dần. Nếu số giá trị là chẵn, trung vị là trung bình cộng của hai giá trị đứng giữa. Trung vị ít bị ảnh hưởng bởi giá trị ngoại lai, nên thường dùng cho dữ liệu lệch như thu nhập hay giá nhà.',
-    note: 'Dữ liệu B · Bài tập 3: hạn 13/11/2026 23:59 · đang mở. Nguồn giúp kiểm tra căn cứ, không bảo đảm mọi tài liệu đều đúng.',
-    summary: 'Bài 3 đang mở. Nguồn §3.2. Đã nhận gợi ý sắp xếp dữ liệu tăng dần, chưa được cung cấp hoặc xác nhận đáp số.'
-  }
-};
+const cases = window.PROTOTYPE_CASES;
+
 const el = id => document.getElementById(id);
 let active = 'KB10';
 let history = [];
