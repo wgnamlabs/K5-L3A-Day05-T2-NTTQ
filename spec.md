@@ -17,15 +17,13 @@
 | Bùi Lê Công Tuấn | 2A202603610 |  |
 
 ## §1. Lát cắt & phạm vi
-- Trong trợ lý học bài của trang khoá học (kiểu ChatGPT Study mode), khi học viên đang hỏi bài lúc tối muộn, khi không còn ai để hỏi, AI giảng kèm trích tài liệu, hỏi lại cho rõ, gợi ý từng bước, hay nói thẳng "tài liệu không có, hỏi giảng viên", để học viên hiểu đúng bài mình đang học, không chép đáp án, không học sai mà không biết.
 
+- Trong trợ lý học bài của trang khoá học (kiểu ChatGPT Study mode), khi học viên đang hỏi bài lúc tối muộn, khi không còn ai để hỏi, AI giảng kèm trích tài liệu, hỏi lại cho rõ, gợi ý từng bước, hay nói thẳng "tài liệu không có, hỏi giảng viên", để học viên hiểu đúng bài mình đang học, không chép đáp án, không học sai mà không biết.
 - Không giải hộ hoặc xác nhận đáp số của bài tập đang mở, vì mục tiêu là giúp học viên hiểu bài, tránh chép đáp án để nộp.
 - Không tự giảng chi tiết nội dung ngoài tài liệu các buổi đã mở, vì không có đủ căn cứ từ khóa học; trợ lý chỉ nêu giới hạn và hướng học viên hỏi TA hoặc giảng viên.
 - Không tự thay đổi hạn nộp, chấm điểm hoặc quyết định gia hạn bài tập, vì những quyết định này thuộc thẩm quyền của giảng viên; trợ lý chỉ thông báo thông tin trên trang khóa học.
 
-## §2. Kịch bản rủi ro  (chặng 2)
-- ≥8 kịch bản, mỗi lớp ①②③④ ít nhất một; mỗi kịch bản: tin người dùng · lớp · AI có thể sai thế nào · sản phẩm tốt nên làm gì · nhãn (nhẹ / sửa được / không chấp nhận được).
-- Bằng chứng: cột "AI có thể sai thế nào" trỏ về một tool hoặc một dòng dữ liệu của track (hoặc chỗ dữ liệu không có).
+## §2. Kịch bản rủi ro
 
 Các lớp rủi ro: ① Nguồn sự thật · ② Mơ hồ / thiếu thông tin · ③ Ngoài phạm vi / thẩm quyền · ④ Đặc thù giáo dục.
 
@@ -43,7 +41,6 @@ Nhãn thể hiện mức hại nếu lỗi xảy ra: nhẹ / sửa được / kh
 | KB08 | “Em ra trung bình là X, trung vị là Y rồi, chỉ cần nói đúng hay sai thôi.” | ④ | Đây vẫn là bài đang mở ở §3.5. AI có thể dùng `goi_y_bai_tap` để xác nhận hoặc bác đáp số, tiết lộ lời giải dù không trình bày phép tính. | Không xác nhận đáp số. Mời học viên mô tả cách xác định các vị trí ở giữa hoặc công thức đã dùng; chỉ gợi ý bước đầu, không kiểm tra thay toàn bộ bài. | Không chấp nhận được |
 | KB09 | “23 giờ rồi, chuyển TA trả lời ngay giúp em, em đang kẹt.” | ④ | Dữ liệu B ghi TA trực 08:00–22:00. AI có thể gọi `chuyen_TA` rồi hứa có người trả lời ngay hoặc nói đã gửi khi tool chưa báo thành công. | Báo đang ngoài giờ trực; chỉ nói đã gửi sau khi `chuyen_TA` xác nhận thành công. Hiện trạng thái chờ và khung giờ trực tiếp theo từ 08:00; không hứa giờ trả lời cụ thể nếu chưa có xác nhận. Trong lúc chờ, hỗ trợ phần có căn cứ trong tài liệu. | Sửa được |
 | KB10 | “Câu độ lệch chuẩn luôn nhỏ hơn phương sai này hay đấy, đăng FAQ cho cả lớp nhớ nhé.” | ①, ④ | `dang_FAQ` có thể đưa câu sai ở §3.3 tới cả lớp. FAQ gỡ được nhưng nhiều học viên có thể đã đọc và học sai, làm hậu quả lan rộng hơn một câu trả lời riêng. | Không đăng nội dung chưa được xác minh. Chỉ rõ câu đang có nghi vấn, đề nghị TA hoặc giảng viên kiểm tra; chỉ công bố phiên bản đã được người có thẩm quyền duyệt. Nếu cần quy trình soạn nháp và duyệt, mô tả phần tách bước ở §4. | Không chấp nhận được |
-
 
 ### Quyết định chọn 2 kịch bản đắt nhất
 
@@ -81,24 +78,17 @@ Nhóm chọn **KB10** làm ca prototype chính vì ca này thể hiện được
 - `dang_FAQ` bị chặn cho đến khi TA hoặc giảng viên duyệt.
 - Hai màn hình: phía học viên và phía TA.
 
+## §3. Khi AI sai
 
-## §3. Khi AI sai  (chặng 3)
-Với mỗi kịch bản đắt nhất:
-- AI nói gì (nguyên văn) · người dùng thấy gì · làm gì tiếp · ai được báo, sau bao lâu.
-- Quyết định: hỏi lại / trả lời kèm giới hạn / dừng và chuyển người — chọn cách nào, đã loại cách nào, vì sao.
-- Loại lỗi (hệ thống / người dùng / ngữ cảnh) và vì sao cách nói, cách sửa đi theo loại đó.
-- 2–3 nguyên tắc HAX/PAIR, mỗi cái trỏ vào một chỗ cụ thể (câu chữ hoặc chỗ trên màn hình).
-- Lỗi nào sửa câu chữ không cứu được (nếu có), và thiết kế cứu nó thế nào.
+### KB07 — Xin giải trọn bài đang mở
 
-### KB07 — Xin giải trọn bài đang mở 
-
-### Bối cảnh và căn cứ
+#### Bối cảnh và căn cứ
 
 - Học viên nhắn: “Giải trọn bài 3, viết luôn phần nhận xét để em nộp trước hạn.”
-- Dữ liệu B: bài 3 đang mở, hạn 13/11/2026 23:59; TA trực 08:00–22:00. Ca demo giả lập lúc 23:00 ngày 12/11/2026.
+- Dữ liệu B: bài 3 đang mở, hạn 13/11/2026 23:59; TA trực 08:00–22:00. Bối cảnh kiểm thử giả lập lúc 23:00 ngày 12/11/2026.
 - Dữ liệu A: §3.5 chứa đề bài; §3.1 định nghĩa trung bình; §3.2 định nghĩa trung vị. Tool `goi_y_bai_tap` gửi gợi ý cho học viên; gửi quá tay thì không thể thu hồi việc học viên đã đọc đáp án.
 
-### AI nói gì, học viên thấy gì
+#### AI nói gì, học viên thấy gì
 
 **Câu AI nói nguyên văn:**
 
@@ -107,22 +97,22 @@ Với mỗi kịch bản đắt nhất:
 Giao diện hiển thị:
 
 - Nhãn “Trợ lý AI”; trạng thái bài đang mở và hạn nộp lấy từ trang khoá học, tách khỏi hạn nộp lab.
-- [1] Thẻ nguồn mở được: trích nguyên văn §3.2 và trường trạng thái/hạn bài 3 của dữ liệu B. Trích dẫn giúp học viên kiểm tra căn cứ, không được coi là bảo đảm mọi tài liệu đều đúng.
-- [2] Trạng thái “Đủ căn cứ cho gợi ý bước đầu”; không dùng phần trăm chắc chắn không được hiệu chỉnh, không tuyên bố toàn bộ câu trả lời chắc chắn đúng.
+- **[1]** Thẻ nguồn mở được: trích nguyên văn §3.2 và trường trạng thái/hạn bài 3 của dữ liệu B. Trích dẫn giúp học viên kiểm tra căn cứ, không được coi là bảo đảm mọi tài liệu đều đúng.
+- **[2]** Trạng thái “Đủ căn cứ cho gợi ý bước đầu”; không dùng phần trăm chắc chắn không được hiệu chỉnh, không tuyên bố toàn bộ câu trả lời chắc chắn đúng.
 - Gợi ý chỉ gồm bước sắp xếp dữ liệu. Không điền dãy đã sắp xếp, vị trí giữa, kết quả hay kết luận về “lương điển hình”. Không có nút mở đáp án.
-- [3] Nút “Sửa câu hỏi / báo chưa đúng ý” và “Chuyển TA”; phần thời gian ghi “Ngoài giờ trực · TA trực 08:00–22:00 · khung trực tiếp theo từ 08:00 ngày 13/11”.
+- **[3]** Nút “Sửa câu hỏi / báo chưa đúng ý” và “Chuyển TA”; phần thời gian ghi “Ngoài giờ trực · TA trực 08:00–22:00 · khung trực tiếp theo từ 08:00 ngày 13/11”.
 
-### Học viên làm gì tiếp, ai được báo
+#### Học viên làm gì tiếp, ai được báo
 
 1. Học viên tự thực hiện bước đầu hoặc mở nguồn §3.2 để đọc lại. Nếu gửi kết quả, AI không trả lời đúng/sai; chỉ nhắc giới hạn và mời trình bày điều chưa hiểu về phương pháp.
 2. Nếu câu hỏi chưa rõ, AI hỏi một câu làm rõ trước khi gợi ý; ví dụ “Bạn muốn hỏi trung bình hay trung vị?”. Không đoán rồi giải tiếp.
 3. Nếu gợi ý không đúng ý, học viên dùng “Sửa câu hỏi / báo chưa đúng ý”. Giao diện mở ô sửa, giữ lịch sử hội thoại; không tạo lại gợi ý khiến từng bước cộng dồn thành lời giải.
 4. Khi chọn “Chuyển TA”, học viên xem trước câu hỏi và tóm tắt: mã KB07, bài 3 đang mở, mục §3.2, gợi ý đã nhận, điểm còn vướng. Học viên xác nhận trước khi gửi.
 5. Chỉ sau khi `chuyen_TA` báo nhận thành công, giao diện mới hiện “Đã nhận vào hàng chờ TA”, mã yêu cầu do hệ thống trả về và thời điểm tiếp nhận. Nếu gửi thất bại, hiện “Chưa gửi được”, giữ nội dung và cho thử lại; không nói đã báo TA.
-6. Vì đang 23:00, không hứa TA đọc ngay: câu hỏi nằm trong hàng chờ, TA xem khi trở lại ca trực từ 08:00 hôm sau. Đây là khung giờ trực, không phải cam kết trả lời lúc 08:00. Trong giờ trực cũng không tự đặt thời hạn phản hồi nếu chưa có dữ liệu.
+6. Vì đang 23:00, không hứa TA đọc ngay: câu hỏi nằm trong hàng chờ, TA có thể tiếp nhận khi ca trực bắt đầu từ 08:00 hôm sau. Đây là khung giờ trực, không phải cam kết trả lời lúc 08:00. Trong giờ trực cũng không tự đặt thời hạn phản hồi nếu chưa có dữ liệu.
 7. Nếu học viên không làm gì, bài vẫn mở đến hạn thật; không tự gửi TA, không tự nộp bài, không tự gia hạn và không tự giải tiếp.
 
-### Quyết định và phương án đã loại
+#### Quyết định và phương án đã loại
 
 **Chọn trả lời kèm giới hạn và một gợi ý đầu tiên.** Yêu cầu đã rõ là giải hộ bài 3 nên không cần hỏi lại để trì hoãn. Có đủ căn cứ để giúp học viên bắt đầu mà không cần chờ TA ngoài giờ.
 
@@ -134,21 +124,13 @@ Giao diện hiển thị:
 | Từ chối hoàn toàn và chuyển TA ngay | Loại làm mặc định: lúc 23:00 TA đã hết giờ, học viên phải chờ dù một gợi ý có căn cứ có thể giúp ngay. Giữ chuyển TA như lựa chọn chủ động. |
 | Hỏi “bạn có chắc muốn xem đáp án?” | Loại: sự đồng ý của học viên không cấp quyền cho AI giải hộ bài đang mở. |
 
-### Phân biệt loại lỗi và cách sửa
+#### Phân biệt loại lỗi và cách sửa
 
-- **Yêu cầu của người dùng vượt giới hạn hỗ trợ:** học viên xin giải hộ, nhưng chưa đủ căn cứ để kết luận gian lận hay yếu năng lực. Nói trung tính về giới hạn bài đang mở, không trách móc và không nhận xét con người. Đây là đầu vào cần xử lý, không phải bằng chứng hệ thống đã lỗi.
+- **Lỗi người dùng/đầu vào:** Học viên xin giải hộ, nhưng chưa đủ căn cứ để kết luận gian lận hay yếu năng lực. Nói trung tính về giới hạn bài đang mở, không trách móc và không nhận xét con người. Đây là đầu vào cần xử lý, không phải bằng chứng hệ thống đã lỗi.
 - **Lỗi hệ thống:** AI biết bài đang mở nhưng vẫn giải hoặc xác nhận đáp số; hoặc tra nhầm trạng thái bài, bịa nguồn, nói đã gửi TA khi chưa thành công. Cần nhận trách nhiệm: “Mình đã hỗ trợ vượt giới hạn của bài đang mở. Mình sẽ dừng phần lời giải và chuyển sang hướng dẫn phương pháp.” Dừng tiết lộ thêm, đánh dấu sự cố và cung cấp đường báo TA; không giả vờ thu hồi được kiến thức đã lộ.
 - **Lỗi ngữ cảnh:** AI đưa đúng định nghĩa nhưng học viên vẫn không biết bắt đầu ở đâu lúc TA nghỉ. Cần điều chỉnh mức gợi ý và hỏi điểm vướng, không đổ lỗi rằng học viên đọc chưa kỹ.
 
-### Ba nguyên tắc HAX/PAIR dùng chung
-
-| Nguyên tắc | Vị trí trên màn hình học viên | Áp dụng KB07 và KB10 |
-|---|---|---|
-| HAX G11 + PAIR Explainability & Trust | [1] Thẻ nguồn, mở đoạn gốc và trạng thái bài | KB07: §3.2 + hạn/trạng thái bài; KB10: hiện đúng câu nghi vấn §3.3, phân biệt “có nguồn” và “đã xác minh”. |
-| HAX G10: thu hẹp khi nghi ngờ | [2] Nhãn căn cứ/giới hạn và câu hỏi làm rõ | KB07: chỉ gợi ý bước đầu; không biết học viên hỏi khái niệm nào thì hỏi lại. KB10: dừng khẳng định câu sai và dừng đăng FAQ khi chưa được xác minh. |
-| HAX G9 + PAIR Errors & Graceful Failure | [3] Sửa câu hỏi, chuyển TA, trạng thái gửi và giờ trực | Học viên sửa ngay trong hội thoại hoặc chuyển người thật sau khi xem trước; giữ nội dung khi gửi lỗi và không hứa TA phản hồi ngoài giờ. |
-
-### Lỗi mà sửa câu chữ không cứu được
+#### Lỗi mà sửa câu chữ không cứu được
 
 Nếu đáp án đã hiện, thêm câu “chỉ tham khảo” hoặc xoá tin không làm học viên chưa từng thấy đáp án. Cần chặn trước khi gửi: kiểm tra mã bài và trạng thái từ dữ liệu B; với bài đang mở chỉ cho phép gợi ý đầu tiên, chặn đầu ra có đáp số, nhận xét hoàn chỉnh hoặc xác nhận đúng/sai. Giới hạn áp dụng cả lịch sử hội thoại để nhiều gợi ý nhỏ không cộng thành lời giải. Không có trạng thái đáng tin cậy thì hỏi lại hoặc chuyển TA, không tự mở đáp án. Prototype dùng phản hồi dựng sẵn để minh hoạ giới hạn; sản phẩm thật cần kiểm soát phía hệ thống trước khi phát nội dung, không chỉ ẩn nút ở giao diện.
 
@@ -166,13 +148,9 @@ Nếu đáp án đã hiện, thêm câu “chỉ tham khảo” hoặc xoá tin 
 
 Ngoài câu trả lời, học viên nhìn thấy:
 
-- Nhãn màu cảnh báo: **“Mình chưa chắc — nội dung cần được kiểm tra.”**
-- Thẻ nguồn: **“Tài liệu buổi 3 · §3.3 Phương sai và độ lệch chuẩn.”**
-- Nguyên văn câu trong tài liệu đang có nghi vấn.
-- Trạng thái: **“FAQ chưa được đăng.”**
-- Nút chính: **“Gửi TA kiểm tra.”**
-- Nút phụ: **“Xem vì sao có nghi vấn.”**
-- Nút thoát: **“Để sau.”**
+- **[1]** Thẻ nguồn: “Tài liệu buổi 3 · §3.3 Phương sai và độ lệch chuẩn”, kèm nguyên văn câu đang có nghi vấn.
+- **[2]** Nhãn màu cảnh báo: “Mình chưa chắc — nội dung cần được kiểm tra.”
+- **[3]** Trạng thái “FAQ chưa được đăng”, nút chính “Gửi TA kiểm tra”, nút phụ “Xem vì sao có nghi vấn” và nút thoát “Để sau”.
 - Không có nút cho học viên tự đăng nội dung lên FAQ.
 
 #### Người dùng làm gì tiếp?
@@ -184,9 +162,8 @@ Nếu học viên chọn **“Gửi TA kiểm tra”**, hệ thống hiển th�
 Sau khi học viên xác nhận và `chuyen_TA` báo thành công:
 
 - Câu hỏi được đưa vào hàng chờ của TA.
-- Học viên thấy trạng thái **“Đã gửi TA kiểm tra.”**
-- Nếu đang ngoài giờ 08:00–22:00, hệ thống nói rõ TA sẽ nhìn thấy yêu cầu từ ca trực tiếp theo lúc 08:00.
-- Hệ thống không hứa thời điểm có câu trả lời vì dữ liệu track không cung cấp SLA.
+- Học viên thấy trạng thái “Đã gửi TA kiểm tra”.
+- Nếu đang ngoài giờ 08:00–22:00, yêu cầu được đưa vào hàng chờ; TA có thể tiếp nhận từ khi ca trực tiếp theo bắt đầu lúc 08:00. Hệ thống không hứa thời điểm phản hồi cụ thể.
 - Trong lúc chờ, nội dung không được đăng FAQ.
 
 Nếu học viên không thực hiện hành động nào:
@@ -209,10 +186,10 @@ TA nhìn thấy:
 - Đoạn tài liệu §3.3 đang có nghi vấn.
 - Lý do AI không chắc.
 - Ví dụ phản chứng mà AI đã phát hiện.
-- Trạng thái **“FAQ chưa được đăng”**.
+- Trạng thái “FAQ chưa được đăng”.
 - Các lựa chọn: trả lời riêng cho học viên, sửa bản nháp hoặc duyệt một phiên bản đã chỉnh sửa để đăng FAQ.
 
-Nếu ngoài giờ, yêu cầu được xếp hàng ngay và TA nhìn thấy từ ca trực tiếp theo lúc 08:00. Hệ thống không thông báo cho cả lớp trước khi có người duyệt.
+Nếu ngoài giờ, yêu cầu được xếp hàng ngay; TA có thể tiếp nhận từ khi ca trực tiếp theo bắt đầu lúc 08:00. Đây là giờ bắt đầu ca trực, không phải cam kết trả lời lúc 08:00. Hệ thống không thông báo cho cả lớp trước khi có người duyệt.
 
 #### Quyết định cách xử lý
 
@@ -247,18 +224,6 @@ Cách sửa phải gồm cả hai phần:
 - Câu chữ nói rõ giới hạn và căn cứ.
 - Thiết kế chặn `dang_FAQ` cho tới khi TA hoặc giảng viên duyệt.
 
-#### Nguyên tắc HAX/PAIR
-
-- **HAX G2 — Làm rõ hệ thống làm tốt đến đâu:** nhãn “Mình chưa chắc — nội dung cần được kiểm tra” cho học viên biết AI không xác nhận câu trong §3.3 là đúng.
-- **HAX G11 + PAIR Explainability and Trust:** thẻ nguồn hiển thị đúng “Tài liệu buổi 3 · §3.3” và ví dụ phương sai 0,25 giúp học viên tự kiểm tra vì sao AI nghi ngờ.
-- **HAX G10 + PAIR Errors and Graceful Failure:** khi nguồn có nghi vấn, hệ thống thu hẹp hành động bằng cách chặn đăng FAQ và đưa ra đường lui “Gửi TA kiểm tra”.
-
-Trên ảnh prototype, ba vị trí này cần được đánh số để người chấm chỉ trực tiếp được:
-
-1. Nhãn “Mình chưa chắc”.
-2. Thẻ nguồn §3.3 và lý do có nghi vấn.
-3. Trạng thái “FAQ chưa được đăng” cùng nút “Gửi TA kiểm tra”.
-
 #### Lỗi sửa câu chữ không cứu được
 
 Chỉ thêm câu “AI có thể sai” là chưa đủ. Nếu giao diện vẫn có nút “Đăng FAQ” và AI vẫn được gọi trực tiếp `dang_FAQ`, học viên hoặc AI vẫn có thể phát tán kiến thức sai.
@@ -270,6 +235,14 @@ Thiết kế phải cứu lỗi bằng cách:
 - AI chỉ được tạo bản nháp.
 - TA hoặc giảng viên phải duyệt phiên bản cuối trước khi đăng.
 - Nếu không ai duyệt, bản nháp không bao giờ tự động được công bố.
+
+### Ba nguyên tắc HAX/PAIR dùng chung
+
+| Nguyên tắc | Vị trí trên prototype | Áp dụng |
+|---|---|---|
+| **HAX G11 + PAIR Explainability & Trust** | **[1] Thẻ nguồn và căn cứ** | KB07 hiện §3.2 cùng trạng thái bài đang mở; KB10 hiện nguyên văn câu có nghi vấn tại §3.3. |
+| **HAX G2 — Làm rõ hệ thống làm tốt đến đâu** | **[2] Nhãn trạng thái của AI** | KB07 hiện “Đủ căn cứ cho gợi ý bước đầu”; KB10 hiện “Mình chưa chắc — nội dung cần được kiểm tra”. |
+| **HAX G10 + PAIR Errors & Graceful Failure** | **[3] Giới hạn hành động và đường lui** | KB07 chỉ gợi ý bước đầu, không mở đáp án; KB10 chặn đăng FAQ và cho phép chuyển TA. |
 
 
 ## §4. Mức tự chủ  (chặng 4)
