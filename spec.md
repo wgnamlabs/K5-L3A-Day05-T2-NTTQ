@@ -12,7 +12,7 @@
 | Họ và Tên | Mã Học Viên | Việc đã làm |
 |---|---|---|
 | Trần Quang Nam | 2A202603516 |  |
-|  |  |  |
+| Nguyễn Bá Quảng | 2A202603555 |  |
 |  |  |  |
 
 ## §1. Lát cắt & phạm vi
