@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trợ lý học bài · Màn hình học viên</title>
+  <style>
+:root{font-family:"Segoe UI",Arial,sans-serif;color:#24332f;background:#f5f7f5;font-size:15px;line-height:1.6;--accent:#24624f;--muted:#5e6e67;--line:#dce4df}*{box-sizing:border-box}body{margin:0}button,select,textarea{font:inherit}button,summary,select{cursor:pointer}button{min-height:44px}a{color:inherit}button:focus-visible,a:focus-visible,summary:focus-visible,select:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid #267bba;outline-offset:4px}.topbar{height:76px;background:white;border-bottom:1px solid var(--line);padding:0 5%;display:flex;align-items:center;justify-content:space-between}.brand{text-decoration:none;font-weight:700;font-size:19px}.brand span{font-weight:400;color:var(--muted);font-size:14px;margin-left:16px}.simulation{font-size:12px;font-weight:600;padding:4px 10px;border:1px solid #cad6cd;border-radius:5px;color:#4d6255}main{max-width:1280px;margin:40px auto;padding:0 32px;display:grid;grid-template-columns:270px minmax(0,1fr);gap:40px}.course{padding-top:8px}.eyebrow{font-size:11px;letter-spacing:1.6px;font-weight:700;color:var(--muted);margin:0 0 12px}h1{font-size:26px;line-height:1.35;font-weight:600;margin:0 0 12px}h2{font-size:16px;margin:0 0 8px}h3{font-size:14px;margin:0 0 8px}p{margin:8px 0 16px}.muted{color:var(--muted)}.divider{border-top:1px solid var(--line);margin:28px 0}label{display:block;font-size:13px;font-weight:600;margin-bottom:8px}select,textarea{width:100%;padding:10px;border:1px solid #b7c6bc;border-radius:6px;background:white;color:inherit}textarea{resize:vertical}.assignment,.office{margin-top:28px;padding-top:22px;border-top:1px solid var(--line)}.assignment p,.office p{font-size:13px}.open{font-size:11px;color:var(--accent);background:#e3eee8;padding:3px 6px;margin-left:6px;border-radius:4px}.office>strong{font-size:13px;color:#885c19}.fixture{font-size:12px;color:var(--muted);margin-top:25px}.workspace{background:white;border:1px solid var(--line);border-radius:12px;padding:30px 34px}.chat-heading{display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid var(--line);padding-bottom:24px}.chat-heading h2{font-size:27px;font-weight:600;line-height:1.3}.annotation-toggle{font-size:11px;color:var(--muted);white-space:nowrap}.user-message{background:#edf2ef;border-radius:10px 10px 2px 10px;max-width:85%;margin:26px 0 26px auto;padding:14px 18px}.message-label{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px}.ai-message{padding:0 0 18px}.ai-message p{margin:12px 0}.confidence{display:inline-block;background:#fff3d9;color:#79551c;border-radius:5px;padding:5px 10px;font-size:12px;font-weight:600}.confidence.safe{background:#e8f2ec;color:#24543c}.annotation{display:inline-flex;align-items:center;justify-content:center;background:#24624f;color:white;border-radius:50%;width:20px;height:20px;font-size:11px;font-weight:700;margin-right:5px}.source{background:#f7f9f7;padding:16px 18px;border:1px solid var(--line);border-radius:7px}summary{color:var(--accent);font-size:14px}blockquote{margin:14px 0;border-left:3px solid #a8c4b5;padding-left:14px;font-size:14px}.source p{font-size:12px;margin-bottom:0}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}button{border-radius:6px;padding:9px 14px;font-size:13px;font-weight:600;border:1px solid transparent}.primary{background:var(--accent);color:white}.primary:hover{background:#194d3d}.secondary{background:white;border-color:#bdcbc2;color:#324c40}.secondary:hover{background:#f0f5f2}footer{border-top:1px solid var(--line);margin-top:24px;padding-top:18px;font-size:12px;color:#40534a}.legend{grid-column:1/-1;display:flex;gap:24px;justify-content:flex-end;font-size:12px;color:var(--muted)}.legend b{color:var(--accent);margin-right:6px}.hide-annotations .annotation,.hide-annotations .legend{display:none}[hidden]{display:none!important}#question-form{margin-top:24px}.status{font-size:13px;color:var(--accent)}dialog{border:1px solid var(--line);border-radius:12px;padding:26px;max-width:560px;width:calc(100% - 32px);max-height:90dvh;color:inherit}dialog::backdrop{background:#172e2566}dialog h2{font-size:23px}dialog p{font-size:13px}.dialog-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.close{background:white;font-size:24px;padding:0 12px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;font-size:13px;background:#f1f5f2;padding:16px;border-radius:6px}.failure-option{margin-top:16px;color:var(--muted);font-weight:400}#dialog-status{color:#9c3a2c}@media(max-width:850px){main{gap:24px;padding:0 18px;grid-template-columns:210px minmax(0,1fr)}.workspace{padding:24px}.chat-heading{display:block}.annotation-toggle{margin-top:15px}.legend{flex-wrap:wrap;justify-content:flex-start}}@media(max-width:620px){.topbar{height:64px}.brand span{display:none}main{display:block;margin:24px auto}.course h1 br{display:none}.course h1{font-size:23px}.course .divider,.course>h2,.course>p:not(.eyebrow):not(.muted),.assignment{display:none}.office{margin:16px 0;padding:12px 0}.office p{margin-bottom:6px}.workspace{padding:20px 16px}.chat-heading h2{font-size:23px}.user-message{max-width:95%}.legend{margin-top:20px;display:flex;gap:10px}.actions button{flex-grow:1}}
+
+/* Bố cục tham khảo prototype-sample của giảng viên. */
+:root{color:#1d2321;background:#f6f4ef;--accent:#2e6a4f;--muted:#6b6f6c;--line:#dcd8cf}
+.topbar{height:auto;min-height:84px;padding:18px 28px;background:white;align-items:flex-start}.brand{font-size:20px}.brand span{display:block;margin:3px 0 0;font-size:13.5px}
+main{max-width:1280px;margin:20px 0;padding:0 28px 28px;grid-template-columns:420px minmax(0,1fr);gap:24px;align-items:start}
+.workspace{grid-column:1;grid-row:1;border-radius:28px;padding:14px;box-shadow:0 2px 10px #0000000d}.course{grid-column:2;grid-row:1;padding:0;background:white;border:1px solid var(--line);border-radius:16px;overflow:hidden}.course>h1,.course>.eyebrow,.course>.muted,.course>.divider,.course>h2,.course>p:not(.fixture){display:none}
+.course>label{margin:18px 18px 8px;font-size:16px}.course>select{margin:0 18px 18px;width:calc(100% - 36px)}
+.assignment,.office{padding:18px;margin:0;border-top:1px solid var(--line)}.assignment h2,.office h2{font-size:16px}.assignment p,.office p{font-size:14px}.fixture{padding:0 18px 12px}
+.chat-heading{padding:0 6px 9px;display:flex;gap:8px}.chat-heading .eyebrow{display:none}.chat-heading h2{font-size:12px;font-weight:400;color:var(--muted);margin:0}.annotation-toggle{font-size:10px;white-space:normal;margin:0}
+#conversation{padding:6px 4px}.user-message{background:#28507a;color:white;padding:9px 12px;border-radius:14px 14px 2px 14px;margin:10px 0 12px auto;max-width:88%;font-size:14px}.user-message .message-label{color:#d8e6f5}.user-message p{margin:0}
+.ai-message{background:#f1efe9;border-radius:14px 14px 14px 2px;padding:10px 12px;font-size:14px;margin:0 0 10px}.ai-message p{margin:8px 0}.confidence{font-size:12px;border-radius:999px;background:#fbefd3;color:#8a6516;padding:4px 8px}.annotation{background:#c2410c;width:20px;height:20px}
+.source{margin:0 4px;padding:10px 12px;background:white;border-radius:10px}.source h3{font-size:13px}summary{font-size:12.5px}.source blockquote{font-size:13px}.actions{margin:10px 4px;gap:6px}button{border-radius:10px;font-size:13px;padding:8px 10px;min-height:40px}.secondary{border-color:#dcd8cf}.status{margin:12px 8px}footer{margin:14px 4px 0;padding:12px 4px 2px;font-size:11px}
+.legend{grid-column:2;grid-row:2;background:white;border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:12px;justify-content:start;font-size:14px}.legend b{display:inline-flex;align-items:center;justify-content:center;background:#c2410c;color:white;width:20px;height:20px;border-radius:50%}
+@media(min-width:851px){.course{align-self:start}.legend{margin-top:-10px}}
+@media(max-width:850px){main{grid-template-columns:minmax(330px,420px) minmax(0,1fr);gap:16px;padding:0 18px}.brand{font-size:18px}.course>select{font-size:12px}.legend{font-size:12px}}
+@media(max-width:700px){main{display:flex;flex-direction:column;margin:16px auto;padding:0 14px;max-width:460px}.workspace,.course,.legend{width:100%}.workspace{order:1}.course{order:0}.legend{order:2;margin-bottom:24px}.course .assignment,.course .office,.course .fixture{display:none}.course>label{margin-top:12px;font-size:14px}.course>select{margin-bottom:12px}.topbar{padding:14px 18px}.brand span{display:block}.chat-heading{display:flex}}
+/* Một viewport trên laptop; nội dung dài cuộn trong từng vùng. */
+@media(min-width:701px){
+ html,body{height:100%;overflow:hidden}
+ .topbar{height:72px;min-height:72px;padding:12px 24px}
+ main{height:calc(100dvh - 72px);margin:0;padding:16px 24px;max-width:1440px;grid-template-columns:minmax(360px,1.08fr) minmax(300px,1fr);grid-template-rows:minmax(0,1fr) auto;gap:12px 20px}
+ .workspace{grid-row:1/3;height:100%;min-height:0;display:flex;flex-direction:column;padding:12px;overflow:hidden;border-radius:22px}
+ .chat-heading{flex-shrink:0;padding-bottom:8px}
+ #conversation{flex:1 1 auto;min-height:80px;overflow:auto;overscroll-behavior:contain;padding:4px 6px;scrollbar-width:thin}
+ .user-message{margin:6px 0 10px auto;padding:8px 12px;line-height:1.45}
+ .message-label{margin-bottom:4px}
+ .ai-message{padding:10px 12px;line-height:1.5;margin-bottom:6px}
+ .ai-message p{margin:8px 0}
+ .source{flex-shrink:0;padding:8px 12px;margin:6px 4px 0}
+ .source h3{margin-bottom:3px}
+ #source-details[open]{max-height:24dvh;overflow:auto;scrollbar-width:thin}
+ .source blockquote{margin:8px 0;line-height:1.45}
+ .actions{flex-shrink:0;margin:8px 4px 0}
+ footer{flex-shrink:0;margin-top:8px;padding-top:8px;line-height:1.45}
+ .status{flex-shrink:0;font-size:12px;line-height:1.4;margin:6px 4px 0}
+ .status:empty{display:none}
+ #question-form{flex-shrink:0;margin:8px 4px 0;max-height:29dvh;overflow:auto}
+ #question-form textarea{height:64px;min-height:44px}
+ .course{grid-row:1;max-height:100%;overflow:auto;scrollbar-width:thin}
+ .course>label{margin:14px 16px 6px;font-size:15px}
+ .course>select{margin:0 16px 12px;width:calc(100% - 32px);padding:8px}
+ .assignment,.office{padding:12px 16px}
+ .assignment h2,.office h2{margin-bottom:4px;font-size:15px}
+ .assignment p,.office p{margin:4px 0 8px;font-size:13px;line-height:1.45}
+ .fixture{margin:0;padding:8px 16px;font-size:11px}
+ .legend{grid-row:2;margin:0;padding:12px 16px;gap:8px;font-size:12px;line-height:1.4}
+}
+@media(min-width:701px) and (max-height:720px){
+ .topbar{height:62px;min-height:62px;padding:8px 24px}
+ main{height:calc(100dvh - 62px);padding:12px 24px}
+ .ai-message,.user-message{font-size:13px}
+ .assignment,.office{padding:10px 14px}
+ .legend{padding:10px 14px;gap:6px}
+ footer{font-size:10px}
+}
+/* Cấu trúc thuyết minh bám prototype-sample. */
+.course{background:transparent;border:0;overflow:visible;display:flex;flex-direction:column;gap:14px}
+.policy-panel{background:#fff;border:1px solid #dcd8cf;border-radius:16px;padding:16px 18px}
+.policy-panel h2{font-size:16px;margin:0 0 10px}
+.promise{font-size:14px;line-height:1.5;border-left:4px solid #1d2321;padding:7px 10px;background:#faf9f5;margin:0}
+.policy-panel table{border-collapse:collapse;width:100%;font-size:12.5px;line-height:1.45}
+.policy-panel th,.policy-panel td{text-align:left;vertical-align:top;border-bottom:1px solid #dcd8cf;padding:8px 6px}
+.policy-panel th{color:#6b6f6c;font-weight:600}.policy-panel code{font-size:11.5px;white-space:nowrap}
+.level{display:inline-block;padding:2px 7px;border-radius:999px;font-size:11px;font-weight:600;white-space:nowrap}.auto{background:#e5f1ea;color:#2e6a4f}.ask{background:#fbefd3;color:#8a6516}.highlight td{background:#fffaf0}
+.demo-panel{padding:12px 18px}.demo-panel label{margin:0 0 6px}.demo-panel select{padding:7px 9px;font-size:13px}.demo-panel p{font-size:12px;line-height:1.45;margin:8px 0 0}
+.legend{background:white;border:1px solid #dcd8cf;border-radius:16px;padding:14px 18px;font-size:13px;gap:8px}
+@media(min-width:701px){main{max-width:none;grid-template-columns:minmax(350px,32%) minmax(0,1fr);gap:14px 24px}.course{min-height:0;max-height:100%;overflow:auto;gap:12px}.legend{font-size:12px}.policy-panel{padding:14px 18px}.demo-panel{padding:10px 18px}}
+@media(min-width:701px) and (max-height:760px){.policy-panel{padding:10px 14px}.policy-panel h2{font-size:14px;margin-bottom:6px}.promise{font-size:12px}.policy-panel table{font-size:11px}.policy-panel td,.policy-panel th{padding:6px 4px}.policy-panel code{font-size:10px}.course{gap:10px}.demo-panel p{font-size:11px}.legend{padding:10px 14px}}
+@media(max-width:700px){.course{order:2}.legend{order:3}.workspace{order:1}.policy-panel{padding:14px}.policy-panel table{font-size:11px}.policy-panel code{font-size:10px}}
+</style>
+  
+</head>
+<body>
+  <header class="topbar"><a href="index.html" class="brand">Prototype · T2 Giáo dục<span>Trợ lý học bài tối muộn · Dữ liệu dựng · Màn hình học viên</span></a><span class="simulation">Mô phỏng</span></header>
+  <main>
+    <aside class="course" aria-label="Chính sách trợ lý học bài">
+      <section class="policy-panel"><h2>Lời hứa với học viên ở mức này</h2><p class="promise">“Mình giúp bạn bắt đầu từ tài liệu của khóa học; mình không làm hoặc kiểm tra đáp án bài đang mở thay bạn.”<br><strong>Nội dung nghi vấn chỉ được công bố sau khi TA hoặc giảng viên xác minh và duyệt.</strong></p></section>
+      <section class="policy-panel"><h2>Mức tự chủ của 4 tool</h2><table><thead><tr><th>Tool</th><th>Mức</th><th>Vì sao (cái giá khi sai)</th></tr></thead><tbody>
+        <tr><td><code>tra_cuu_tai_lieu</code></td><td><span class="level auto">Tự làm</span></td><td>Chỉ đọc. Luôn hiện mã mục để học viên kiểm tra; có nguồn chưa chắc đã đúng.</td></tr>
+        <tr class="highlight"><td><code>goi_y_bai_tap</code></td><td><span class="level auto">Có giới hạn</span></td><td>Bài đang mở chỉ gợi ý bước đầu. Không thể thu hồi việc học viên đã đọc đáp án.</td></tr>
+        <tr><td><code>chuyen_TA</code></td><td><span class="level ask">Cần xác nhận</span></td><td>Học viên xem trước câu hỏi và bối cảnh. Ngoài giờ vào hàng chờ, không hứa trả lời ngay.</td></tr>
+        <tr><td><code>dang_FAQ</code></td><td><span class="level ask">TA duyệt</span></td><td>Nội dung sai có thể lan tới cả lớp. Không đăng trước rồi sửa sau.</td></tr>
+      </tbody></table></section>
+      <section class="policy-panel demo-panel"><label for="scenario">Ca minh họa</label><select id="scenario"><option value="KB10">KB10 · Tài liệu có câu sai</option><option value="KB07">KB07 · Xin giải bài đang mở</option></select><p><strong>Bài 3 đang mở</strong> · Hạn 13/11/2026 23:59</p><p><span class="annotation">3</span> <strong>Ngoài giờ trực</strong> · TA trực 08:00–22:00. Ca tiếp theo từ 08:00 ngày 13/11; chưa có giờ trả lời cụ thể.</p></section>
+    </aside>    <section class="workspace" aria-labelledby="chat-title">
+      <div class="chat-heading"><div><p class="eyebrow">KHÔNG CẦN TỰ MẮC KẸT</p><h2 id="chat-title">Trợ lý học bài · Buổi 3 · 23:00</h2></div><label class="annotation-toggle"><input id="annotations" type="checkbox" checked> Chú thích HAX/PAIR</label></div>
+      <div id="conversation" role="log" aria-label="Hội thoại với trợ lý AI"></div>
+      <section class="source"><h3><span class="annotation">1</span> Căn cứ để bạn kiểm tra</h3><details id="source-details"><summary id="source-title"></summary><blockquote id="source-text"></blockquote><p id="source-note" class="muted"></p></details></section>
+      <div class="actions"><button id="edit" class="secondary"><span class="annotation">3</span> Sửa câu hỏi / báo chưa đúng ý</button><button id="transfer" class="primary">Chuyển TA <span aria-hidden="true">↗</span></button></div>
+      <form id="question-form" hidden><label for="question">Bạn muốn sửa hoặc làm rõ điều gì?</label><textarea id="question" rows="3" required maxlength="2000"></textarea><div class="actions"><button class="primary" type="submit">Gửi câu hỏi đã sửa</button><button class="secondary" id="cancel-edit" type="button">Hủy</button></div></form>
+      <p id="status" role="status" class="status"></p>
+      <footer>Trợ lý AI có thể sai. Hãy kiểm tra căn cứ và hỏi TA khi cần.<br><span class="muted">Prototype dùng dữ liệu dựng; không gọi AI thật và không thông báo tới TA thật.</span></footer>
+    </section>
+    <section class="legend" aria-label="Chú thích nguyên tắc"><span><b>1</b> G11 · Hiện căn cứ để kiểm tra</span><span><b>2</b> G10 · Thu hẹp khi nghi ngờ</span><span><b>3</b> G9 · Sửa dễ, có đường chuyển người</span></section>
+  </main>
+  <dialog id="transfer-dialog" aria-labelledby="dialog-title"><form method="dialog"><div class="dialog-heading"><span class="simulation">Mô phỏng</span><button aria-label="Đóng bản xem trước" class="close" value="cancel">×</button></div><h2 id="dialog-title">Xem trước câu hỏi gửi TA</h2><p>TA sẽ nhận câu hỏi và bối cảnh dưới đây khi bạn xác nhận.</p><pre id="transfer-preview"></pre><label for="transfer-note">Điểm bạn còn vướng (không bắt buộc)</label><textarea id="transfer-note" rows="2" maxlength="1000"></textarea><p>Hiện ngoài giờ trực. Yêu cầu sẽ vào hàng chờ; không có cam kết trả lời lúc 08:00.</p><label class="failure-option"><input type="checkbox" id="simulate-failure"> Thử tình huống gửi thất bại</label><p id="dialog-status" role="status"></p><div class="actions"><button value="cancel" class="secondary">Quay lại</button><button id="confirm-transfer" type="button" class="primary">Xác nhận gửi mô phỏng</button></div></form></dialog>
+<script>
+/* Khung tương tác học viên của Quảng. Không gọi AI, không gửi TA thật.
+ * Sự kiện student:transfer-confirmed cung cấp detail để tích hợp app.js của Tiến.
+ */
+const cases = {
+  KB10: {
+    question: 'Câu độ lệch chuẩn luôn nhỏ hơn phương sai này hay đấy, đăng FAQ cho cả lớp nhớ nhé.',
+    confidence: 'Mình chưa chắc: câu trong tài liệu cần được kiểm tra',
+    answer: 'Mình chưa thể đăng câu này lên FAQ. Ở §3.3 có câu “độ lệch chuẩn luôn nhỏ hơn phương sai”, nhưng khẳng định “luôn” có dấu hiệu sai: căn bậc hai của một số nằm giữa 0 và 1 lớn hơn chính số đó. Có trích dẫn không đồng nghĩa nội dung đã được xác minh.',
+    next: 'Bạn có thể mở đoạn gốc bên dưới hoặc chuyển câu hỏi cho TA kiểm tra. Nội dung nghi vấn sẽ không được đăng FAQ khi chưa có TA hoặc giảng viên xác minh và duyệt.',
+    source: 'Tài liệu buổi 3 · §3.3 · Phương sai và độ lệch chuẩn',
+    quote: 'Phương sai đo mức độ phân tán của dữ liệu quanh trung bình. Độ lệch chuẩn là căn bậc hai của phương sai, có cùng đơn vị với dữ liệu. Vì là căn bậc hai, độ lệch chuẩn luôn nhỏ hơn phương sai.',
+    note: 'Đoạn gốc chứa câu nghi vấn, chưa phải nội dung đã xác minh. Không có nút tự đăng FAQ.',
+    summary: 'Mục §3.3 có câu nghi vấn. AI đã cảnh báo và chưa đăng FAQ. Cần TA/giảng viên kiểm tra trước khi công bố.'
+  },
+  KB07: {
+    question: 'Giải trọn bài 3, viết luôn phần nhận xét để em nộp trước hạn.',
+    confidence: 'Đủ căn cứ cho gợi ý bước đầu',
+    answer: 'Bài 3 đang mở đến 23:59 ngày 13/11/2026 theo trang khoá học. Mình không thể giải trọn bài, viết nhận xét hộ hoặc xác nhận đáp số khi bài còn mở. Mình có thể giúp bạn bắt đầu: theo §3.2, để tìm trung vị, trước hết hãy sắp xếp dữ liệu tăng dần. Bạn thử viết lại dãy đã sắp xếp nhé; chưa cần tính kết quả.',
+    next: 'Bạn tự thực hiện bước đầu hoặc đọc lại §3.2. Nếu còn vướng về phương pháp, hãy sửa câu hỏi hoặc chuyển TA. Trợ lý không kiểm tra đáp số hay đưa thêm từng bước để ghép thành lời giải.',
+    source: 'Tài liệu buổi 3 · §3.2 · Trung vị',
+    quote: 'Giá trị đứng giữa khi sắp xếp dữ liệu tăng dần. Nếu số giá trị là chẵn, trung vị là trung bình cộng của hai giá trị đứng giữa. Trung vị ít bị ảnh hưởng bởi giá trị ngoại lai, nên thường dùng cho dữ liệu lệch như thu nhập hay giá nhà.',
+    note: 'Dữ liệu B · Bài tập 3: hạn 13/11/2026 23:59 · đang mở. Nguồn giúp kiểm tra căn cứ, không bảo đảm mọi tài liệu đều đúng.',
+    summary: 'Bài 3 đang mở. Nguồn §3.2. Đã nhận gợi ý sắp xếp dữ liệu tăng dần, chưa được cung cấp hoặc xác nhận đáp số.'
+  }
+};
+const el = id => document.getElementById(id);
+let active = 'KB10';
+let history = [];
+function appendMessage(label, content, className) {
+  const message = document.createElement('div');
+  message.className = className;
+  const name = document.createElement('div'); name.className = 'message-label'; name.textContent = label;
+  const paragraph = document.createElement('p'); paragraph.textContent = content;
+  message.append(name, paragraph); el('conversation').append(message);
+}
+function renderCase() {
+  const data = cases[active]; history = [data.question]; el('conversation').replaceChildren();
+  appendMessage('Bạn', data.question, 'user-message');
+  const response = document.createElement('section'); response.className = 'ai-message';
+  const name = document.createElement('div'); name.className = 'message-label'; name.textContent = 'Trợ lý AI';
+  const badge = document.createElement('div'); badge.className = 'confidence' + (active === 'KB07' ? ' safe' : '');
+  const number = document.createElement('span'); number.className = 'annotation'; number.textContent = '2';
+  badge.append(number, document.createTextNode(data.confidence)); response.append(name, badge);
+  for (const text of [data.answer, data.next]) {const p = document.createElement('p'); p.textContent = text; response.append(p);}
+  el('conversation').append(response);
+  el('source-title').textContent = data.source; el('source-text').textContent = data.quote; el('source-note').textContent = data.note;
+  el('source-details').open = false; el('status').textContent = ''; el('question-form').hidden = true;
+  el('transfer-note').value = ''; el('simulate-failure').checked = false;
+}
+el('scenario').addEventListener('change', event => {active = event.target.value; renderCase();});
+el('annotations').addEventListener('change', event => document.body.classList.toggle('hide-annotations', !event.target.checked));
+el('edit').addEventListener('click', () => {el('question-form').hidden = false; el('question').value = history.at(-1); el('question').focus();});
+el('cancel-edit').addEventListener('click', () => {el('question-form').hidden = true; el('edit').focus();});
+el('question-form').addEventListener('submit', event => {
+  event.preventDefault(); const question = el('question').value.trim(); if (!question) return;
+  history.push(question); appendMessage('Bạn · câu hỏi đã sửa', question, 'user-message');
+  appendMessage('Trợ lý AI · phản hồi dựng sẵn', active === 'KB07'
+    ? 'Mình đã ghi nhận câu hỏi đã sửa. Bài 3 vẫn đang mở; mình không xác nhận kết quả hay cung cấp thêm lời giải. Bạn muốn làm rõ điều gì về phương pháp tìm trung vị? Bạn cũng có thể gửi điểm vướng cho TA.'
+    : 'Mình đã ghi nhận câu hỏi đã sửa. Nội dung §3.3 vẫn cần được xác minh; mình chưa đăng FAQ. Bạn có thể chuyển câu hỏi và bối cảnh hiện tại cho TA.', 'ai-message');
+  el('question-form').hidden = true; el('status').textContent = 'Đã giữ lịch sử câu hỏi để đưa vào bản xem trước gửi TA.';
+});
+el('transfer').addEventListener('click', () => {
+  el('transfer-preview').textContent = `${active}\nCâu hỏi và lịch sử chỉnh sửa:\n${history.join('\n\n')}\n\nBối cảnh: ${cases[active].summary}\nThời điểm mô phỏng: 23:00 ngày 12/11/2026.`;
+  el('dialog-status').textContent = ''; el('transfer-dialog').showModal();
+});
+el('confirm-transfer').addEventListener('click', () => {
+  if (el('simulate-failure').checked) {el('dialog-status').textContent = 'Chưa gửi được (mô phỏng). Nội dung được giữ lại. Bỏ chọn tình huống lỗi để thử gửi lại.'; return;}
+  const request = {id: 'DEMO-' + Date.now().toString(36).toUpperCase(), scenario: active, history: [...history], summary: cases[active].summary, note: el('transfer-note').value.trim(), simulated: true};
+  document.dispatchEvent(new CustomEvent('student:transfer-confirmed', {detail: request}));
+  el('transfer-dialog').close();
+  el('status').textContent = `Mô phỏng: đã nhận vào hàng chờ TA · ${request.id} · tiếp nhận lúc 23:00 ngày 12/11/2026 (giờ demo). TA trực lại từ 08:00 ngày 13/11, chưa có giờ trả lời cụ thể. Không gửi tới TA thật.`;
+});
+renderCase();
+
+</script>
+</body>
+</html>
