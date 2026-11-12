@@ -54,6 +54,7 @@
 </div>
 
 <script src="data.js"></script>
+<script src="policy.js"></script>
 <script>
 /* ===================================================================
    Prototype T2 — KB10: Tài liệu sai & xin đăng FAQ
@@ -65,6 +66,24 @@ const $$ = s => document.querySelectorAll(s);
 
 let currentView = 'student'; // 'student' | 'ta'
 let step = 0;
+
+/* ===== Chính sách mức tự chủ (policy.js, spec.md §4) =====
+   Nút duyệt FAQ đi qua ChinhSach.kiemTraHanhDong('duyet_dang_FAQ', ...) trước khi đăng:
+   chặn nếu chưa tick "đã kiểm tra", nháp còn dấu [NHÁP, hoặc còn câu nghi vấn của §3.3. */
+const CS = window.ChinhSach;
+const NHAP_BAN_DAU =
+  'Hỏi: Độ lệch chuẩn và phương sai, cái nào lớn hơn?\n' +
+  'Trả lời: [NHÁP — CHƯA XÁC MINH] Tài liệu §3.3 viết "Vì là căn bậc hai, độ lệch chuẩn luôn nhỏ hơn phương sai." ' +
+  'Câu này không đúng trong mọi trường hợp — xem ví dụ phản chứng ở trên. Cần TA/giảng viên xác nhận và chỉnh sửa trước khi đăng.';
+const BAN_DA_CHINH =
+  'Hỏi: Độ lệch chuẩn và phương sai, cái nào lớn hơn?\n' +
+  'Trả lời: Không phải lúc nào cũng vậy. Độ lệch chuẩn là căn bậc hai của phương sai: nó lớn hơn phương sai khi phương sai nằm giữa 0 và 1 ' +
+  '(ví dụ phương sai 0,25 thì độ lệch chuẩn 0,5), bằng nhau khi phương sai là 0 hoặc 1, và nhỏ hơn khi phương sai lớn hơn 1. ' +
+  '(Nguồn: §3.3, đã được TA chỉnh lại.)';
+let taDraft = NHAP_BAN_DAU;
+let taChecked = false;
+let taMsg = null;          // {ok, text}
+const policyLog = [];      // nhật ký chính sách, hiện ở panel bên phải của màn hình TA
 // step 0: tin học viên + AI trả lời chưa chắc
 // step 1: học viên bấm "Gửi TA kiểm tra" → modal
 // step 2: đã gửi → hàng chờ
@@ -136,7 +155,7 @@ function renderStudentChat(el) {
       <div class="status-box box-approved">
         <b>✓ TA đã duyệt và đăng FAQ</b><br>
         Phiên bản đã sửa đã được đăng lên FAQ cả lớp.<br>
-        <span style="font-size:13px">"Độ lệch chuẩn không luôn nhỏ hơn phương sai. Ví dụ phương sai 0,25 thì SD = 0,5."</span>
+        <span style="font-size:13px;white-space:pre-wrap">${esc(taDraft)}</span>
       </div>
     `);
   }
@@ -194,20 +213,32 @@ function renderTAView(el) {
   el.innerHTML = html;
 }
 
+function esc(t) {
+  return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
 function renderTADraftAndActions() {
+  const msgColor = taMsg ? (taMsg.ok ? '#2e6a4f' : '#9c3a2c') : 'inherit';
   return `
     <div class="faq-draft">
-      <div class="draft-label">Bản nháp FAQ — chưa đăng</div>
-      <p><b>Hỏi:</b> Độ lệch chuẩn luôn nhỏ hơn phương sai đúng không?</p>
-      <p><b>Trả lời (nháp):</b> Tài liệu §3.3 viết "Vì là căn bậc hai, độ lệch chuẩn luôn nhỏ hơn phương sai." Câu này không đúng trong mọi trường hợp — xem ví dụ phản chứng ở trên. <span style="color:var(--warn)">⚠ Cần TA/giảng viên xác nhận và chỉnh sửa trước khi đăng.</span></p>
+      <div class="draft-label">Bản nháp FAQ — chưa đăng · TA có thể sửa trước khi duyệt</div>
+      <textarea id="ta-draft" rows="6" aria-label="Bản nháp FAQ" oninput="setDraft(this.value)"
+        style="width:100%;font:inherit;font-size:13px;padding:8px;border:1px solid #bdcbc2;border-radius:6px">${esc(taDraft)}</textarea>
+      <p style="font-size:12px;color:var(--muted);margin:6px 0 0">Mức: cần TA/giảng viên duyệt. AI chỉ soạn nháp (soan_nhap_FAQ) và không có quyền bấm nút duyệt.</p>
     </div>
-    <div class="ta-actions">
-      <button class="btn btn-primary" onclick="taApprove()">
+    <label style="display:flex;gap:6px;align-items:center;font-size:13px;margin-top:8px">
+      <input type="checkbox" id="ta-checked" ${taChecked ? 'checked' : ''} onchange="setChecked(this.checked)">
+      Tôi đã kiểm tra §3.3 và nội dung bản đăng
+    </label>
+    <div class="ta-actions" style="flex-wrap:wrap">
+      <button class="btn btn-primary" id="btn-approve" onclick="taApprove()">
         <span class="ann-num">3</span>Sửa và duyệt đăng FAQ
       </button>
+      <button class="btn btn-outline" id="btn-use-fixed" onclick="useFixed()">Dùng bản đã chỉnh (ví dụ)</button>
       <button class="btn btn-outline" onclick="taReplyPrivate()">Trả lời riêng cho học viên</button>
-      <button class="btn">Từ chối đăng</button>
+      <button class="btn" onclick="taReject()">Từ chối đăng</button>
     </div>
+    <p id="ta-msg" role="status" style="font-size:13px;margin:8px 0 0;color:${msgColor}">${taMsg ? esc(taMsg.text) : ''}</p>
   `;
 }
 
@@ -215,8 +246,8 @@ function renderTAApproved() {
   return `
     <div class="faq-published">
       <div class="published-label">✓ FAQ đã duyệt và đăng</div>
-      <p><b>Hỏi:</b> Độ lệch chuẩn luôn nhỏ hơn phương sai đúng không?</p>
-      <p><b>Trả lời (đã duyệt bởi TA):</b> Không phải lúc nào cũng đúng. Tài liệu §3.3 viết "Vì là căn bậc hai, độ lệch chuẩn luôn nhỏ hơn phương sai" — câu này sai khi phương sai < 1. Ví dụ: phương sai = 0,25 thì SD = √0,25 = 0,5 > 0,25. Quy tắc chính xác: SD = √Var; SD < Var khi Var > 1, SD > Var khi 0 < Var < 1, SD = Var khi Var = 0 hoặc Var = 1.</p>
+      <p style="white-space:pre-wrap"><b>Bản đã đăng (duyệt bởi TA):</b>
+${esc(taDraft)}</p>
     </div>
     <div style="margin-top:8px">
       <span class="badge badge-approved">✓ Đã duyệt bởi TA lúc 08:12</span>
@@ -246,6 +277,7 @@ function renderPanels() {
         </div>
       </div>
       ${renderToolTable()}
+      ${renderPolicyLog()}
       ${renderAnnotations()}
     `;
     return;
@@ -269,6 +301,18 @@ function getStatusPromise() {
   if (step === 2) return 'Đã gửi TA. Yêu cầu nằm trong hàng chờ. TA có thể tiếp nhận từ 08:00. <b>FAQ vẫn chưa được đăng.</b>';
   if (step >= 3) return 'TA đã duyệt. FAQ phiên bản đã sửa đã được đăng cho cả lớp.';
   return '';
+}
+
+function renderPolicyLog() {
+  const items = policyLog.length
+    ? policyLog.map(m => `<li style="color:${m.ok ? '#2e6a4f' : '#9c3a2c'}">${m.ok ? 'CHO PHÉP' : 'CHẶN'} · <code>${m.tool}</code> · ${esc(m.mota)}${m.lyDo ? ' — ' + esc(m.lyDo) : ''}</li>`).join('')
+    : '<li style="color:var(--muted)">Chưa có hành động nào.</li>';
+  return `
+    <div class="panel">
+      <h2>Nhật ký chính sách (§4)</h2>
+      <ul id="policy-log" style="margin:0;padding-left:18px;font-size:12.5px;line-height:1.5">${items}</ul>
+    </div>
+  `;
 }
 
 function renderToolTable() {
@@ -325,8 +369,30 @@ function showWhy() {
   alert('Phương sai nằm trong (0, 1) thì căn bậc hai lớn hơn chính số đó.\nVí dụ: Var = 0,25 → SD = √0,25 = 0,5 > 0,25.\nNguồn: §3.3 Tài liệu buổi 3.');
 }
 
+function setDraft(v) { taDraft = v; taMsg = null; }
+function setChecked(c) { taChecked = c; }
+function useFixed() { taDraft = BAN_DA_CHINH; taMsg = null; render(); }
+
+function logPolicy(tool, mota, kq) {
+  policyLog.unshift({ tool, mota, ok: kq.ok, lyDo: kq.ly_do });
+}
+
 function taApprove() {
+  const kq = CS.kiemTraHanhDong('duyet_dang_FAQ', { nguoi: 'TA', daDuyet: taChecked, noiDung: taDraft });
+  logPolicy('duyet_dang_FAQ', 'TA bấm duyệt và đăng', kq);
+  if (!kq.ok) {
+    taMsg = { ok: false, text: 'Chặn: ' + kq.ly_do };
+    render();
+    return;
+  }
+  taMsg = { ok: true, text: 'Đã đăng FAQ (mô phỏng) bằng bản TA đã chỉnh.' };
   step = 3;
+  render();
+}
+
+function taReject() {
+  logPolicy('duyet_dang_FAQ', 'TA từ chối đăng', { ok: true, ly_do: '' });
+  taMsg = { ok: true, text: 'Đã từ chối đăng (mô phỏng). FAQ không được đăng.' };
   render();
 }
 
@@ -341,6 +407,8 @@ $$('.view-toggle button[data-view]').forEach(btn => {
     $$('.view-toggle button[data-view]').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentView = btn.dataset.view;
+    // Sau khi TA duyệt (bước 3), quay về màn hình học viên thì học viên thấy kết quả (bước 4), giống phím tắt →.
+    if (currentView === 'student' && step === 3) step = 4;
 
     // Reset chat bar
     if (currentView === 'student') {
@@ -358,6 +426,8 @@ $('#toggle-ann').onchange = e => {
 
 // Modal confirm
 $('#btn-confirm-send').onclick = () => {
+  logPolicy('chuyen_TA', 'học viên đã xác nhận bản tóm tắt', CS.kiemTraHanhDong('chuyen_TA', { hocVienXacNhan: true }));
+  logPolicy('soan_nhap_FAQ', 'AI soạn nháp, gắn cờ chưa xác minh', CS.kiemTraHanhDong('soan_nhap_FAQ', { noiDung: NHAP_BAN_DAU }));
   step = 2;
   $('#modal-confirm').classList.remove('show');
   render();
@@ -380,6 +450,9 @@ document.addEventListener('keydown', e => {
       currentView = 'ta';
       render();
     } else if (currentView === 'ta' && step === 2) {
+      // Phím tắt demo: dùng bản đã chỉnh + tick kiểm tra, rồi vẫn đi qua chính sách.
+      taDraft = BAN_DA_CHINH;
+      taChecked = true;
       taApprove();
     } else if (currentView === 'ta' && step >= 3) {
       // Quay lại student
